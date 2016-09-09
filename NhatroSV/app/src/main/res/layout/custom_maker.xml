@@ -1,130 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
-    android:padding="12dp"
+    android:padding="2dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#4f8ae9"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:gravity="center"
-        android:id="@+id/marker_title"
-        android:textStyle="bold"
-        android:text="Tieeu ddeef"/>
+    android:layout_height="wrap_content">
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:id="@+id/marker_image"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/icon_demo"
-        android:layout_gravity="center" />
-
+        android:background="@drawable/icon_demo" />
     <LinearLayout
-        android:layout_marginLeft="120dp"
+        android:layout_width="wrap_content"
         android:orientation="vertical"
-        android:layout_width="300dp"
-        android:gravity="center"
-        android:layout_marginTop="30dp"
+        android:padding="10dp"
+        android:layout_gravity="center"
         android:layout_height="wrap_content">
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:layout_marginLeft="12dp"
-                android:layout_height="wrap_content"
-                android:text="Giá phòng (VNĐ)"
-                android:textColor="#4f8ae9"
-                android:textStyle="bold" />
-            <TextView
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_marginTop="10dp"
-                android:id="@+id/marker_price"
-                android:layout_height="wrap_content"
-                android:text="1.300.000"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:layout_marginLeft="12dp"
-                android:layout_height="wrap_content"
-                android:text="Diện tích (m2)"
-                android:textColor="#4f8ae9"
-                android:textStyle="bold" />
-            <TextView
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_marginTop="10dp"
-                android:layout_height="wrap_content"
-                android:text="18"
-                android:id="@+id/marker_acr"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
+            android:textColor="#4f8ae9"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/marker_title"
+            android:textStyle="bold"
+            android:text="Title"/>
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:layout_marginLeft="12dp"
-                android:layout_height="wrap_content"
-                android:text="Điện (kVNĐ/Wh)"
-                android:textColor="#4f8ae9"
-                android:textStyle="bold" />
-            <TextView
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_marginTop="10dp"
-                android:id="@+id/marker_price_elec"
-                android:layout_height="wrap_content"
-                android:text="1.300.000"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:layout_marginLeft="12dp"
-                android:layout_height="wrap_content"
-                android:text="Nước (VNĐ/m3)"
-                android:textColor="#4f8ae9"
-                android:textStyle="bold" />
-            <TextView
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_marginTop="10dp"
-                android:id="@+id/marker_price_water"
-                android:layout_height="wrap_content"
-                android:text="1.300.000"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
+            android:layout_height="wrap_content"
+            android:textColor="#424242"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:gravity="center"
+            android:id="@+id/marker_address"
+            android:textStyle="bold"
+            android:text="Title"/>
     </LinearLayout>
 
-
-
-</RelativeLayout>
+</LinearLayout>

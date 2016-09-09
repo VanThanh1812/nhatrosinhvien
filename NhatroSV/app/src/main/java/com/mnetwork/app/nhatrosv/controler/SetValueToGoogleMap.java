@@ -32,14 +32,11 @@ public class SetValueToGoogleMap {
             MotelRoom room = list.get(i);
             ImageRoom imageRoom = db.getListImageRoomForRoom(list.get(i).getRoom_id()).get(0);
             Latlog_Room latlogRoom =db.getListLatlog_room(room.getRoom_id()).get(0);
-            // snippet =  link + price + electric + water + acr
+            // snippet =  link + address
 
             String marker_title = room.getRoom_type();
             String marker_snippet = imageRoom.getImage_link()+
-                    StaticVariables.split+room.getRoom_price()+
-                    StaticVariables.split+room.getRoom_electric_price()+
-                    StaticVariables.split+room.getRoom_water_price()+
-                    StaticVariables.split+room.getRoom_acreage();
+                    StaticVariables.split+room.getRoom_address();
 
             MarkerOptions options=new MarkerOptions();
 
@@ -54,6 +51,7 @@ public class SetValueToGoogleMap {
         }
 
         myMap.setInfoWindowAdapter(new CustomInfoWindow(activity));
+
 
     }
 

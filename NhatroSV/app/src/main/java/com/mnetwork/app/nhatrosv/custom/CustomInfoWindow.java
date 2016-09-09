@@ -31,22 +31,20 @@ public class CustomInfoWindow implements GoogleMap.InfoWindowAdapter {
     public View getInfoContents(Marker marker) {
         View v = LayoutInflater.from(activity).inflate(R.layout.custom_maker,null);
 
-        // snippet =  link + price + electric + water + acr
+        // snippet =  link + address
         String[] snippet = marker.getSnippet().split(StaticVariables.split);
 
         ImageView img = (ImageView) v.findViewById(R.id.marker_image);
-        TextView txt_price = (TextView) v.findViewById(R.id.marker_price);
-        TextView txt_price_electric = (TextView) v.findViewById(R.id.marker_price_elec);
-        TextView txt_price_water = (TextView) v.findViewById(R.id.marker_price_water);
-        TextView txt_acr = (TextView) v.findViewById(R.id.marker_acr);
+        TextView txt_address = (TextView) v.findViewById(R.id.marker_address);
+
         TextView txt_title = (TextView) v.findViewById(R.id.marker_title);
 
         Glide.with(activity).load(snippet[0]).centerCrop().into(img);
-        if (!snippet[1].equals(null)) txt_price.setText(snippet[1]);
-        if (!snippet[2].equals(null)) txt_price_electric.setText(snippet[2]);
-        if (!snippet[3].equals(null)) txt_price_water.setText(snippet[3]);
-        if (!snippet[4].equals(null)) txt_acr.setText(snippet[4]);
+
+        if (!snippet[1].equals(null)) txt_address.setText(snippet[1]);
+
         txt_title.setText(marker.getTitle());
+
         return v;
     }
 }
