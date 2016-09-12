@@ -64,20 +64,12 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void testData (){
-        MyDatabaseHelper db = new MyDatabaseHelper(this);
-        FirebaseHouseOwner.getDataToDatabase(this,db,myMap);
-        if (db.getAllRoom().size() != 0){
-            SetValueToGoogleMap.setMarker(this,myMap);
-        }
-    }
 
     private void onMyMapReady(GoogleMap googleMap) {
         myMap = googleMap;
         myMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
-
                 myProgress.dismiss();
             }
         });
@@ -88,7 +80,9 @@ public class MainActivity extends AppCompatActivity
         myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(20.985,105.85), 15f));
 
         myMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
         myMap.getUiSettings().setZoomControlsEnabled(true);
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -102,6 +96,13 @@ public class MainActivity extends AppCompatActivity
         myMap.setMyLocationEnabled(true);
 
        testData();
+    }
+    public void testData (){
+        MyDatabaseHelper db = new MyDatabaseHelper(this);
+        FirebaseHouseOwner.getDataToDatabase(this,db,myMap);
+        if (db.getAllRoom().size() != 0){
+            SetValueToGoogleMap.setMarker(this,myMap);
+        }
     }
 
 
@@ -130,10 +131,17 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_filter) {
             return true;
         }
 
+        if (id == R.id.action_statistical){
+            return true;
+        }
+
+        if (id ==R.id.action_refesh){
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -146,8 +154,6 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
 

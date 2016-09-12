@@ -1,14 +1,26 @@
 package com.mnetwork.app.nhatrosv.controler;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.mnetwork.app.nhatrosv.R;
 import com.mnetwork.app.nhatrosv.custom.CustomInfoWindow;
 import com.mnetwork.app.nhatrosv.database.MyDatabaseHelper;
+import com.mnetwork.app.nhatrosv.model.HouseOwner;
 import com.mnetwork.app.nhatrosv.model.ImageRoom;
 import com.mnetwork.app.nhatrosv.model.Latlog_Room;
 import com.mnetwork.app.nhatrosv.model.MotelRoom;
@@ -20,38 +32,84 @@ import java.util.ArrayList;
  * Created by vanthanhbk on 31/08/2016.
  */
 public class SetValueToGoogleMap {
-    public static void setMarker (Activity activity, GoogleMap myMap){
+    public static void setMarker(final Activity activity, GoogleMap myMap) {
 
         MyDatabaseHelper db = new MyDatabaseHelper(activity);
         ArrayList<MotelRoom> list = db.getAllRoom();
 
         int count = list.size();
 
-        for (int i=0;i<count;i++){
+        for (int i = 0; i < count; i++) {
 
             MotelRoom room = list.get(i);
             ImageRoom imageRoom = db.getListImageRoomForRoom(list.get(i).getRoom_id()).get(0);
-            Latlog_Room latlogRoom =db.getListLatlog_room(room.getRoom_id()).get(0);
-            // snippet =  link + address
-
+            Latlog_Room latlogRoom = db.getListLatlog_room(room.getRoom_id()).get(0);
+            HouseOwner owner = db.getOwner(room.getRoom_id_owner());
+            // snippet =  link + address+ sđt + room_id
+            //
             String marker_title = room.getRoom_type();
-            String marker_snippet = imageRoom.getImage_link()+
-                    StaticVariables.split+room.getRoom_address();
+            String marker_snippet = imageRoom.getImage_link() +
+                    StaticVariables.split + room.getRoom_address() +
+                    StaticVariables.split + owner.getOwner_phone() +
+                    StaticVariables.split + room.getRoom_id();
 
-            MarkerOptions options=new MarkerOptions();
+            MarkerOptions options = new MarkerOptions();
 
             options.snippet(marker_snippet);
             options.title(marker_title);
-            options.position(new LatLng(latlogRoom.getLatlog_log(),latlogRoom.getLatlog_lat()));
+
+            options.position(new LatLng(latlogRoom.getLatlog_log(), latlogRoom.getLatlog_lat()));
             options.icon(BitmapDescriptorFactory.defaultMarker());
 
-            if (myMap != null){
+            if (myMap != null) {
                 myMap.addMarker(options);
-            }else Log.d("check","null roi");
+            } else Log.d("check", "null roi");
         }
 
         myMap.setInfoWindowAdapter(new CustomInfoWindow(activity));
 
+        myMap.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
+            @Override
+            public void onInfoWindowLongClick(Marker marker) {
+
+                final String[] info_marker = marker.getSnippet().split(StaticVariables.split);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                View v = LayoutInflater.from(activity).inflate(R.layout.dialog_marker_long_click, null);
+
+                TextView txt_call = (TextView) v.findViewById(R.id.txt_call);
+                TextView txt_inbox = (TextView) v.findViewById(R.id.txt_inbox);
+                TextView txt_danhgia = (TextView) v.findViewById(R.id.txt_danhgia);
+
+                txt_call.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        // snippet =  link + address+ sđt + room_id
+
+                        String phone_no = info_marker[2].toString().replaceAll("-", "");
+                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                        callIntent.setData(Uri.parse("tel:" + phone_no));
+                        callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            // TODO: Consider calling
+                            //    ActivityCompat#requestPermissions
+                            // here to request the missing permissions, and then overriding
+                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                            //                                          int[] grantResults)
+                            // to handle the case where the user grants the permission. See the documentation
+                            // for ActivityCompat#requestPermissions for more details.
+                            return;
+                        }
+                        activity.startActivity(callIntent);
+                    }
+                });
+
+                builder.setView(v);
+                builder.show();
+            }
+        });
 
     }
 

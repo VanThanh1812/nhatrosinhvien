@@ -5,15 +5,11 @@
         <item
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_yourlocation"
-            android:title="Địa điểm của bạn" />
+            android:title="Hiển thị nhà trọ" />
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_friend"
-            android:title="Địa điểm của bạn bè bạn" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:title="Địa điểm bạn bè" />
     </group>
 
     <item android:title="Communicate">

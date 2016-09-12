@@ -2,8 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_settings"
+        android:icon="@drawable/filter"
+        android:id="@+id/action_filter"
+        android:title="Lọc nhà trọ"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
         app:showAsAction="never" />
+    <item
+        android:icon="@drawable/statistics"
+        android:id="@+id/action_statistical"
+        android:orderInCategory="100"
+        android:title="Thống kê nhà trọ"
+        app:showAsAction="never" />
+    <item
+        android:icon="@drawable/refresh"
+        android:id="@+id/action_refesh"
+        android:orderInCategory="100"
+        app:showAsAction="always" />
+
 </menu>
