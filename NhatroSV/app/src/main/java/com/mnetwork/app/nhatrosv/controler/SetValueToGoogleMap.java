@@ -68,11 +68,19 @@ public class SetValueToGoogleMap {
 
         myMap.setInfoWindowAdapter(new CustomInfoWindow(activity));
 
+        myMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                return false;
+            }
+        });
+
         myMap.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
             @Override
             public void onInfoWindowLongClick(Marker marker) {
 
                 final String[] info_marker = marker.getSnippet().split(StaticVariables.split);
+                final String phone_no = info_marker[2].toString().replaceAll("-", "");
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                 View v = LayoutInflater.from(activity).inflate(R.layout.dialog_marker_long_click, null);
@@ -81,13 +89,14 @@ public class SetValueToGoogleMap {
                 TextView txt_inbox = (TextView) v.findViewById(R.id.txt_inbox);
                 TextView txt_danhgia = (TextView) v.findViewById(R.id.txt_danhgia);
 
+                txt_call.setSelected(true);
                 txt_call.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
                         // snippet =  link + address+ sđt + room_id
 
-                        String phone_no = info_marker[2].toString().replaceAll("-", "");
+
                         Intent callIntent = new Intent(Intent.ACTION_CALL);
                         callIntent.setData(Uri.parse("tel:" + phone_no));
                         callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -103,6 +112,16 @@ public class SetValueToGoogleMap {
                             return;
                         }
                         activity.startActivity(callIntent);
+                    }
+                });
+
+                txt_inbox.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+                        smsIntent.setType("vnd.android-dir/mms-sms");
+                        smsIntent.putExtra("address", phone_no);
+                        activity.startActivity(smsIntent);
                     }
                 });
 

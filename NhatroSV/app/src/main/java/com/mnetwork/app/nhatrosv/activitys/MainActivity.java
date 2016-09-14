@@ -23,6 +23,7 @@ import com.mnetwork.app.nhatrosv.R;
 import com.mnetwork.app.nhatrosv.controler.SetValueToGoogleMap;
 import com.mnetwork.app.nhatrosv.database.MyDatabaseHelper;
 import com.mnetwork.app.nhatrosv.firebase.FirebaseHouseOwner;
+import com.mnetwork.app.nhatrosv.model.GPSTracker;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -103,6 +104,8 @@ public class MainActivity extends AppCompatActivity
         if (db.getAllRoom().size() != 0){
             SetValueToGoogleMap.setMarker(this,myMap);
         }
+        GPSTracker g =new GPSTracker(this);
+        g.showSettingsAlert();
     }
 
 
