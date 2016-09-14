@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -18,12 +19,15 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.mnetwork.app.nhatrosv.R;
 import com.mnetwork.app.nhatrosv.controler.SetValueToGoogleMap;
 import com.mnetwork.app.nhatrosv.database.MyDatabaseHelper;
 import com.mnetwork.app.nhatrosv.firebase.FirebaseHouseOwner;
 import com.mnetwork.app.nhatrosv.model.GPSTracker;
+import com.mnetwork.app.nhatrosv.staticvalues.StaticVariables;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -75,11 +79,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-
-        myMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(20.985,105.85)));
-
-        myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(20.985,105.85), 15f));
-
         myMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
         myMap.getUiSettings().setZoomControlsEnabled(true);
@@ -96,6 +95,27 @@ public class MainActivity extends AppCompatActivity
         }
         myMap.setMyLocationEnabled(true);
 
+        GPSTracker g =new GPSTracker(this);
+        //g.showSettingsAlert();
+
+        if (g.canGetLocation()){
+
+            Log.d("location",String.valueOf(g.getLatitude())+"  "+String.valueOf(g.getLongitude()));
+
+            myMap.addMarker(new MarkerOptions().position(new LatLng(g.getLatitude(),g.getLongitude())).title("Bạn đang ở đây").snippet(StaticVariables.split+"Lat: "+String.valueOf(g.getLatitude())+"   Long: "+String.valueOf(g.getLongitude())).icon(BitmapDescriptorFactory.defaultMarker()));
+
+            myMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(g.getLatitude(),g.getLongitude())));
+
+            myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(g.getLatitude(),g.getLongitude()), 15f));
+
+        }else {
+            myMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(20.985,105.85)));
+
+            myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(20.985,105.85), 15f));
+        }
+
+
+
        testData();
     }
     public void testData (){
@@ -104,8 +124,7 @@ public class MainActivity extends AppCompatActivity
         if (db.getAllRoom().size() != 0){
             SetValueToGoogleMap.setMarker(this,myMap);
         }
-        GPSTracker g =new GPSTracker(this);
-        g.showSettingsAlert();
+
     }
 
 
