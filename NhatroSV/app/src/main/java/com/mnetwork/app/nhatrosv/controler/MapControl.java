@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -31,8 +32,8 @@ import java.util.ArrayList;
 /**
  * Created by vanthanhbk on 31/08/2016.
  */
-public class SetValueToGoogleMap {
-    public static void setMarker(final Activity activity, GoogleMap myMap) {
+public class MapControl {
+    public static void setMarker(final Activity activity, com.google.android.gms.maps.GoogleMap myMap) {
 
         MyDatabaseHelper db = new MyDatabaseHelper(activity);
         ArrayList<MotelRoom> list = db.getAllRoom();
@@ -68,14 +69,23 @@ public class SetValueToGoogleMap {
 
         myMap.setInfoWindowAdapter(new CustomInfoWindow(activity));
 
-        myMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+        myMap.setOnMarkerClickListener(new com.google.android.gms.maps.GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 return false;
             }
         });
 
-        myMap.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
+        myMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+                Log.i("centerLat",String.valueOf(cameraPosition.target.latitude));
+
+                Log.i("centerLong",String.valueOf(cameraPosition.target.longitude));
+            }
+        });
+
+        myMap.setOnInfoWindowLongClickListener(new com.google.android.gms.maps.GoogleMap.OnInfoWindowLongClickListener() {
             @Override
             public void onInfoWindowLongClick(Marker marker) {
 
@@ -131,5 +141,7 @@ public class SetValueToGoogleMap {
         });
 
     }
+
+
 
 }

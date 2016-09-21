@@ -2,19 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:icon="@drawable/filter"
+        android:icon="@drawable/filter2"
         android:id="@+id/action_filter"
         android:title="Lọc nhà trọ"
         android:orderInCategory="100"
-        app:showAsAction="never" />
+        app:showAsAction="always" />
     <item
-        android:icon="@drawable/statistics"
-        android:id="@+id/action_statistical"
-        android:orderInCategory="100"
-        android:title="Thống kê nhà trọ"
-        app:showAsAction="never" />
-    <item
-        android:icon="@drawable/refresh"
+        android:title="Refresh data"
+        android:icon="@drawable/reload"
         android:id="@+id/action_refesh"
         android:orderInCategory="100"
         app:showAsAction="always" />
