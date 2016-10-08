@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:padding="5dp"
+    android:background="?selectableItemBackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/img_listhouse_avatar"
+        android:background="@drawable/com_facebook_button_icon_blue"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Phan Văn Thành"
+        android:textStyle="bold"
+        android:textColor="#0d47a1"
+        android:background="?selectableItemBackground"
+        android:id="@+id/txt_listhouse_name"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_alignTop="@+id/img_listhouse_avatar"
+        android:layout_toRightOf="@+id/img_listhouse_avatar"
+        android:layout_toEndOf="@+id/img_listhouse_avatar" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="2016-09-24"
+        android:id="@+id/txt_listhouse_updatetime"
+        android:layout_alignBottom="@+id/img_listhouse_avatar"
+        android:layout_alignLeft="@+id/txt_listhouse_name"
+        android:layout_alignStart="@+id/txt_listhouse_name" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:text="[Login facebook]
+Mọi người cho mình hỏi khi mình login facebook mình add vào database một note User gồm tên và email.
+Tuy nhiên sau đó mình update cập nhật lại tên thì lần login tiếp theo note User lại bị tạo lại.
+Cho mình hỏi ở hàm login facebook phần tạo thêm note User mình phải sử lý như thế nào.
+Cám ơn mọi người."
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/txt_listhouse_message"
+        android:layout_below="@+id/img_listhouse_avatar"
+        android:layout_alignLeft="@+id/img_listhouse_avatar"
+        android:layout_alignStart="@+id/img_listhouse_avatar"
+        android:layout_marginTop="21dp" />
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/img_listhouse_picture"
+        android:layout_below="@+id/txt_listhouse_message"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="120dp"
+        android:layout_height="36dp"
+        android:shadowRadius="@android:integer/config_mediumAnimTime"
+        android:text="Xem bình luận"
+        android:elevation="2dp"
+        android:id="@+id/btn_listpost_comments"
+        android:textColor="#ffffff"
+        android:background="@drawable/font_button"
+        android:layout_below="@+id/img_listhouse_picture"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        />
+
+</RelativeLayout>

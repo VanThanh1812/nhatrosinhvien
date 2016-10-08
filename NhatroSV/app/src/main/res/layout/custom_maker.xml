@@ -9,9 +9,9 @@
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:id="@+id/marker_image"
-        android:background="@drawable/icon_demo" />
+        android:background="@drawable/ic_app" />
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:orientation="vertical"
         android:padding="10dp"
         android:layout_gravity="center"
@@ -29,9 +29,12 @@
             android:layout_height="wrap_content"
             android:textColor="#424242"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:gravity="center"
             android:id="@+id/marker_address"
             android:textStyle="bold"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
             android:text="Title"/>
     </LinearLayout>
 

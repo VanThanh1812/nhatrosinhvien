@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -21,6 +22,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        getSupportActionBar().setTitle("Login");
         /*try {
             PackageInfo info = getPackageManager().getPackageInfo(
                     "g.vanthanhbk.getpostgroupf",
@@ -65,11 +68,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onCancel() {
 
+                Toast.makeText(LoginActivity.this, "Login bị hủy", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(FacebookException error) {
                 Log.d("errorapp",error.toString());
+                Toast.makeText(LoginActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
 

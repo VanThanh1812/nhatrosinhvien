@@ -18,14 +18,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
+import com.github.clans.fab.FloatingActionButton;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -33,14 +29,13 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mnetwork.app.nhatrosv.R;
-import com.mnetwork.app.nhatrosv.controler.MapControl;
+import com.mnetwork.app.nhatrosv.controller.MapControl;
+import com.mnetwork.app.nhatrosv.controller.ParseJsonGroupPost;
+import com.mnetwork.app.nhatrosv.controller.ParseJsonLogin;
 import com.mnetwork.app.nhatrosv.database.MyDatabaseHelper;
 import com.mnetwork.app.nhatrosv.firebase.FirebaseHouseOwner;
 import com.mnetwork.app.nhatrosv.model.GPSTracker;
 import com.mnetwork.app.nhatrosv.staticvalues.StaticVariables;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -61,6 +56,9 @@ public class MainActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        FloatingActionButton fab_view_post_facebook = (FloatingActionButton) findViewById(R.id.menu_list);
+        FloatingActionButton fab_add_house = (FloatingActionButton) findViewById(R.id.menu_add);
+        FloatingActionButton fab_view_house = (FloatingActionButton) findViewById(R.id.menu_house);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -71,24 +69,41 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // Login
         loginFacebook();
-        //
 
-        /*try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    "com.mnetwork.app.nhatrosv",
-                    PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+        fab_view_post_facebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(view.getContext(),ListHouseActivity.class);
+                startActivity(intent);
+
             }
-        } catch (PackageManager.NameNotFoundException e) {
+        });
 
-        } catch (NoSuchAlgorithmException e) {
+        fab_view_house.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(getCurrentFocus(),"Nothing",Snackbar.LENGTH_SHORT).setAction("Cancel", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // nothing
+                    }
+                }).show();
+            }
+        });
 
-        }*/
+        fab_add_house.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(getCurrentFocus(),"Nothing",Snackbar.LENGTH_SHORT).setAction("Cancel", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // nothing
+                    }
+                }).show();
+            }
+        });
     }
 
     private void loginFacebook (){
@@ -99,69 +114,8 @@ public class MainActivity extends AppCompatActivity
             * TODO:get info
             * */
             Log.d("accesstoken",AccessToken.getCurrentAccessToken().getToken());
-            final GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
-                    new GraphRequest.GraphJSONObjectCallback() {
-                @Override
-                public void onCompleted(JSONObject object, GraphResponse response) {
-                    Log.d("loginactivity",response.toString());
-                    //
-//                    Log.d("json",object.toString());
-
-                    try {
-                        Log.d("loginactivity",object.toString());
-
-                        if (response != null && response.getError() == null &&
-                                object != null) {
-
-                            String name = object.get("first_name")+" "+object.get("last_name");
-                            String email = object.get("email").toString();
-
-                            TextView txt_nav_name = (TextView)findViewById(R.id.txt_nav_name);
-                            TextView txt_nav_email = (TextView)findViewById(R.id.txt_nav_email);
-                            toolbar.setTitle("Hi, "+object.get("first_name"));
-
-                            txt_nav_email.setText(email);
-                            txt_nav_name.setText(name);
-
-                            String url_ava = object.getJSONObject("picture")
-                                    .getJSONObject("data").getString("url");
-                            ImageView img = (ImageView)findViewById(R.id.img_nav_avatar);
-                            Glide.with(getBaseContext()).load(url_ava).centerCrop().into(img);
-
-                            /*String url_cover_picture= object.getJSONObject("cover").getString("source").toString();
-                            LinearLayout linearLayout =(LinearLayout)findViewById(R.id.img_nav_cover);
-                            try {
-                                URL url = new URL(url_cover_picture);
-
-                                Drawable d= Drawable.createFromStream(url.openStream(),"src");
-                                linearLayout.setBackground(d);
-                            } catch (MalformedURLException e) {
-                                e.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }*/
-
-
-                            Snackbar.make(getCurrentFocus(),"Xin chào "+name,Snackbar.LENGTH_LONG).setAction("Cancel", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-
-                                }
-                            }).show();
-                        }else {
-                            Toast.makeText(getBaseContext(),"Login lỗi :((" ,Toast.LENGTH_LONG).show();
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            });
-            Bundle parameters=new Bundle();
-            parameters.putString("fields","id,first_name,last_name,email,gender,birthday,location,picture.width(150).height(150),cover");
-            request.setParameters(parameters);
-            request.executeAsync();
-
+            ParseJsonLogin login = new ParseJsonLogin(AccessToken.getCurrentAccessToken(),this);
+            login.setInfoUser();
 
             /*
             * TODO: get Maps
@@ -176,8 +130,17 @@ public class MainActivity extends AppCompatActivity
                 }
             });
 
+            /*
+            * TODO: get post
+            * */
+
+            ParseJsonGroupPost parseJsonGroupPost = new ParseJsonGroupPost(AccessToken.getCurrentAccessToken());
+            parseJsonGroupPost.getJson();
+
         }
     }
+
+
 
     private void goLoginActivity() {
         Intent i = new Intent(this,LoginActivity.class);
@@ -185,7 +148,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void onMyMapReady(com.google.android.gms.maps.GoogleMap googleMap) {
+
         myMap = googleMap;
+
         myMap.setOnMapLoadedCallback(new com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
@@ -207,6 +172,7 @@ public class MainActivity extends AppCompatActivity
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+
         myMap.setMyLocationEnabled(true);
 
         GPSTracker g =new GPSTracker(this);
@@ -222,12 +188,15 @@ public class MainActivity extends AppCompatActivity
             myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(g.getLatitude(),g.getLongitude()), 15f));
 
         }else {
+
             myMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(20.985,105.85)));
 
             myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(20.985,105.85), 10f));
+
         }
 
        testData();
+
     }
     public void testData (){
         MyDatabaseHelper db = new MyDatabaseHelper(this);

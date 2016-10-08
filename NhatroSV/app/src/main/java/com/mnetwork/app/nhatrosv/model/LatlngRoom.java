@@ -3,15 +3,15 @@ package com.mnetwork.app.nhatrosv.model;
 /**
  * Created by vanthanhbk on 27/08/2016.
  */
-public class Latlog_Room {
+public class LatlngRoom {
     private int latlog_id;
     private double latlog_lat;
     private double latlog_log;
 
-    public Latlog_Room() {
+    public LatlngRoom() {
     }
 
-    public Latlog_Room(int latlog_id, double latlog_log, double latlog_lat) {
+    public LatlngRoom(int latlog_id, double latlog_log, double latlog_lat) {
         this.latlog_id = latlog_id;
         this.latlog_lat = latlog_lat;
         this.latlog_log = latlog_log;
@@ -19,7 +19,7 @@ public class Latlog_Room {
 
     @Override
     public String toString() {
-        return "Latlog_Room{" +
+        return "LatlngRoom{" +
                 "latlog_id=" + latlog_id +
                 ", latlog_lat=" + latlog_lat +
                 ", latlog_log=" + latlog_log +

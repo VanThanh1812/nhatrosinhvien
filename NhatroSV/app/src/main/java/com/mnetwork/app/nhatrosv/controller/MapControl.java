@@ -1,4 +1,4 @@
-package com.mnetwork.app.nhatrosv.controler;
+package com.mnetwork.app.nhatrosv.controller;
 
 import android.Manifest;
 import android.app.Activity;
@@ -19,11 +19,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mnetwork.app.nhatrosv.R;
+import com.mnetwork.app.nhatrosv.activitys.RoomDetailActivity;
 import com.mnetwork.app.nhatrosv.custom.CustomInfoWindow;
 import com.mnetwork.app.nhatrosv.database.MyDatabaseHelper;
 import com.mnetwork.app.nhatrosv.model.HouseOwner;
 import com.mnetwork.app.nhatrosv.model.ImageRoom;
-import com.mnetwork.app.nhatrosv.model.Latlog_Room;
+import com.mnetwork.app.nhatrosv.model.LatlngRoom;
 import com.mnetwork.app.nhatrosv.model.MotelRoom;
 import com.mnetwork.app.nhatrosv.staticvalues.StaticVariables;
 
@@ -44,7 +45,7 @@ public class MapControl {
 
             MotelRoom room = list.get(i);
             ImageRoom imageRoom = db.getListImageRoomForRoom(list.get(i).getRoom_id()).get(0);
-            Latlog_Room latlogRoom = db.getListLatlog_room(room.getRoom_id()).get(0);
+            LatlngRoom latlogRoom = db.getListLatlog_room(room.getRoom_id()).get(0);
             HouseOwner owner = db.getOwner(room.getRoom_id_owner());
             // snippet =  link + address+ sđt + room_id
             //
@@ -82,6 +83,14 @@ public class MapControl {
                 Log.i("centerLat",String.valueOf(cameraPosition.target.latitude));
 
                 Log.i("centerLong",String.valueOf(cameraPosition.target.longitude));
+            }
+        });
+
+        myMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Intent i = new Intent(activity, RoomDetailActivity.class);
+                activity.startActivity(i);
             }
         });
 

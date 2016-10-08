@@ -11,7 +11,7 @@
     <application
         android:name=".activitys.GetApp"
         android:allowBackup="true"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/icon_app"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -36,8 +36,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activitys.RoomDetail" />
-        <activity android:name=".activitys.LoginActivity"></activity>
+        <activity android:name=".activitys.LoginActivity" />
+        <activity
+            android:name=".activitys.ListHouseActivity"
+            android:label="@string/title_activity_list_house"
+            android:parentActivityName=".activitys.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activitys.RoomDetailActivity"
+            android:label="@string/title_activity_room_detail"
+            android:parentActivityName=".activitys.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

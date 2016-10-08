@@ -9,7 +9,7 @@ import android.util.Log;
 
 import com.mnetwork.app.nhatrosv.model.HouseOwner;
 import com.mnetwork.app.nhatrosv.model.ImageRoom;
-import com.mnetwork.app.nhatrosv.model.Latlog_Room;
+import com.mnetwork.app.nhatrosv.model.LatlngRoom;
 import com.mnetwork.app.nhatrosv.model.MotelRoom;
 
 import java.util.ArrayList;
@@ -157,7 +157,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void addLatLogRoom (Latlog_Room latlog) {
+    public void addLatLogRoom (LatlngRoom latlog) {
         Log.d(TAG,"them toa do nha tro");
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -243,9 +243,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
-    public ArrayList<Latlog_Room> getListLatlog_room (int id_room){
+    public ArrayList<LatlngRoom> getListLatlog_room (int id_room){
         SQLiteDatabase db = this.getReadableDatabase();
-        ArrayList<Latlog_Room> list = new ArrayList<>();
+        ArrayList<LatlngRoom> list = new ArrayList<>();
 
         Cursor cursor =db.query(TABLE_LATLOG,new String[]{LATLOG_COLUMN_ID,LATLOG_COLUMN_LOG,LATLOG_COLUMN_LAT},LATLOG_COLUMN_ID+"=?",
                 new String[]{String.valueOf(id_room)},null,null,null);
@@ -253,7 +253,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         if (cursor != null) {
             cursor.moveToFirst();
             do {
-                Latlog_Room latlogRoom= new Latlog_Room(cursor.getInt(0),Double.parseDouble(cursor.getString(1)),Double.parseDouble(cursor.getString(2)));
+                LatlngRoom latlogRoom= new LatlngRoom(cursor.getInt(0),Double.parseDouble(cursor.getString(1)),Double.parseDouble(cursor.getString(2)));
                 list.add(latlogRoom);
             } while (cursor.moveToNext());
         }
@@ -399,7 +399,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return db.update(TABLE_IMAGEROOM,values,IMAGE_COLUMN_ID+"=?",new String[]{String.valueOf(imageRoom.getImage_id())});
     }
 
-    public int updateLatlogRoom (Latlog_Room latlog){
+    public int updateLatlogRoom (LatlngRoom latlog){
         Log.d(TAG,"them toa do nha tro");
         SQLiteDatabase db = this.getWritableDatabase();
 

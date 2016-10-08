@@ -44,6 +44,7 @@ public class CustomInfoWindow implements GoogleMap.InfoWindowAdapter {
         if (!snippet[1].equals(null)) txt_address.setText(snippet[1]);
 
         txt_title.setText(marker.getTitle());
+        txt_address.setSelected(true);
 
         return v;
     }
