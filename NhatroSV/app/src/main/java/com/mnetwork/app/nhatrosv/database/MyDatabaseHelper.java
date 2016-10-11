@@ -238,8 +238,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         }
         else Log.d(TAG,"ko co ");
 
-
-
         return list;
     }
 
@@ -363,7 +361,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 noteList.add(room);
             } while (cursor.moveToNext());
         }
-        else Log.d(TAG,"ko co ");
+        else Log.d(TAG,"ko co room");
 
 
         return noteList;

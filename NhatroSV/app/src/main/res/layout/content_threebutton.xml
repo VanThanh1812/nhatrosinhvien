@@ -7,6 +7,7 @@
         android:layout_height="72dp"
         android:background="@color/com_facebook_button_background_color_focused">
         <LinearLayout
+            android:onClick="callOwner"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:background="?selectableItemBackground"
@@ -28,6 +29,7 @@
                 android:text="GỌI ĐIỆN"/>
         </LinearLayout>
         <LinearLayout
+            android:onClick="sendMessage"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:background="?selectableItemBackground"
@@ -49,6 +51,7 @@
                 android:text="TIN NHẮN"/>
         </LinearLayout>
         <LinearLayout
+            android:onClick="showFeedback"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
@@ -70,6 +73,7 @@
                 android:text="PHẢN HỒI"/>
         </LinearLayout>
         <LinearLayout
+            android:onClick="showInfoOwner"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"

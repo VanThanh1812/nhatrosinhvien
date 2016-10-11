@@ -44,12 +44,12 @@ public class MapControl {
         for (int i = 0; i < count; i++) {
 
             MotelRoom room = list.get(i);
-            ImageRoom imageRoom = db.getListImageRoomForRoom(list.get(i).getRoom_id()).get(0);
+            Log.d("setForRoom",String.valueOf(room.getRoom_id()));
+            ImageRoom imageRoom = db.getListImageRoomForRoom(room.getRoom_id()).get(0);
             LatlngRoom latlogRoom = db.getListLatlog_room(room.getRoom_id()).get(0);
             HouseOwner owner = db.getOwner(room.getRoom_id_owner());
             // snippet =  link + address+ sđt + room_id
-            //
-            String marker_title = room.getRoom_type();
+            String marker_title = String.valueOf(room.getRoom_id())+StaticVariables.split+room.getRoom_type();
             String marker_snippet = imageRoom.getImage_link() +
                     StaticVariables.split + room.getRoom_address() +
                     StaticVariables.split + owner.getOwner_phone() +
@@ -59,12 +59,12 @@ public class MapControl {
 
             options.snippet(marker_snippet);
             options.title(marker_title);
-
             options.position(new LatLng(latlogRoom.getLatlog_log(), latlogRoom.getLatlog_lat()));
-            options.icon(BitmapDescriptorFactory.defaultMarker());
+            options.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_marker));
 
             if (myMap != null) {
                 myMap.addMarker(options);
+                Log.d("addhouseoffline",options.getTitle()+"  "+String.valueOf(latlogRoom.getLatlog_log()));
             } else Log.d("check", "null roi");
         }
 
@@ -90,6 +90,7 @@ public class MapControl {
             @Override
             public void onInfoWindowClick(Marker marker) {
                 Intent i = new Intent(activity, RoomDetailActivity.class);
+                i.putExtra("room_id",marker.getTitle());
                 activity.startActivity(i);
             }
         });

@@ -33,6 +33,7 @@ public class CustomInfoWindow implements GoogleMap.InfoWindowAdapter {
 
         // snippet =  link + address
         String[] snippet = marker.getSnippet().split(StaticVariables.split);
+        String[] title = marker.getTitle().split(StaticVariables.split);
 
         ImageView img = (ImageView) v.findViewById(R.id.marker_image);
         TextView txt_address = (TextView) v.findViewById(R.id.marker_address);
@@ -43,7 +44,7 @@ public class CustomInfoWindow implements GoogleMap.InfoWindowAdapter {
 
         if (!snippet[1].equals(null)) txt_address.setText(snippet[1]);
 
-        txt_title.setText(marker.getTitle());
+        txt_title.setText(title[1]);
         txt_address.setSelected(true);
 
         return v;

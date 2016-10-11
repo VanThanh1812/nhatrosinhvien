@@ -11,6 +11,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.mnetwork.app.nhatrosv.R;
 import com.mnetwork.app.nhatrosv.custom.CustomInfoWindow;
 import com.mnetwork.app.nhatrosv.database.MyDatabaseHelper;
 import com.mnetwork.app.nhatrosv.model.ImageRoom;
@@ -87,7 +88,7 @@ public class FirebaseImage {
         LatlngRoom latlogRoom =db.getListLatlog_room(room.getRoom_id()).get(0);
         // snippet =  link + price + electric + water + acr
 
-        String marker_title = room.getRoom_type();
+        String marker_title = String.valueOf(room.getRoom_id())+StaticVariables.split+room.getRoom_type();
         String marker_snippet = imageRoom.getImage_link()+
                 StaticVariables.split+room.getRoom_price()+
                 StaticVariables.split+room.getRoom_electric_price()+
@@ -99,10 +100,11 @@ public class FirebaseImage {
         options.snippet(marker_snippet);
         options.title(marker_title);
         options.position(new LatLng(latlogRoom.getLatlog_log(),latlogRoom.getLatlog_lat()));
-        options.icon(BitmapDescriptorFactory.defaultMarker());
+        options.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_marker));
 
         if (myMap != null){
             myMap.addMarker(options);
+            Log.d("addhouseonline",options.getTitle()+"  "+String.valueOf(latlogRoom.getLatlog_log()));
         }else Log.d("check","null roi");
 
         myMap.setInfoWindowAdapter(new CustomInfoWindow(activity));

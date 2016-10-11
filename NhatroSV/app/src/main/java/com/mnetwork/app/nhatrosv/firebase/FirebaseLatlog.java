@@ -32,15 +32,17 @@ public class FirebaseLatlog {
                 Map<String,Object> map= dataSnapshot.getValue(Map.class);
 
 
-                if (!map.get(LATLOG_LOG).toString().equals(null)){
-                    LatlngRoom latlog = new LatlngRoom(id_room,Double.parseDouble(map.get(LATLOG_LOG).toString()),Double.parseDouble(map.get(LATLOG_LAT).toString()));
+                if (!dataSnapshot.getKey().toString().equals(null)){
+
+                    LatlngRoom latlog = new LatlngRoom(Integer.parseInt(dataSnapshot.getKey()),Double.parseDouble(map.get(LATLOG_LOG).toString()),Double.parseDouble(map.get(LATLOG_LAT).toString()));
                     MyDatabaseHelper db = new MyDatabaseHelper(activity);
                     db.addLatLogRoom(latlog);
-                }
+
                 //cha co tac dung meo gi het
 
-                FirebaseImage.getImage(activity,Integer.parseInt(dataSnapshot.getKey()),myMap);
+                    FirebaseImage.getImage(activity,Integer.parseInt(dataSnapshot.getKey()),myMap);
 
+                }
             }
 
             @Override

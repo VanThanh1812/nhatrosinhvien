@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity
 
             Log.d("location",String.valueOf(g.getLatitude())+"  "+String.valueOf(g.getLongitude()));
 
-            myMap.addMarker(new MarkerOptions().position(new LatLng(g.getLatitude(),g.getLongitude())).title("Bạn đang ở đây").snippet(StaticVariables.split+"Lat: "+String.valueOf(g.getLatitude())+"   Long: "+String.valueOf(g.getLongitude())).icon(BitmapDescriptorFactory.defaultMarker()));
+            myMap.addMarker(new MarkerOptions().position(new LatLng(g.getLatitude(),g.getLongitude())).title("Bạn đang ở đây"+StaticVariables.split).snippet(StaticVariables.split+"Lat: "+String.valueOf(g.getLatitude())+"   Long: "+String.valueOf(g.getLongitude())).icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_marker)));
 
             myMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(g.getLatitude(),g.getLongitude())));
 
@@ -195,7 +195,10 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-       testData();
+//        MyDatabaseHelper db = new MyDatabaseHelper(this);
+//        Log.d("testlatlng",String.valueOf(db.getListLatlog_room(3001).get(0).getLatlog_lat())+"   "+db.getMotelRoomById(3001).getRoom_id());
+
+        testData();
 
     }
     public void testData (){
