@@ -36,7 +36,7 @@
             android:text="So 151/37, Nguyen Duc Canh, Hoang Mai, Ha Noi"/>
 
 
-        <include layout="@layout/content_threebutton"></include>
+        <include layout="@layout/content_fourbutton"></include>
         <android.support.v7.widget.RecyclerView
             android:layout_width="wrap_content"
             android:layout_height="72dp">

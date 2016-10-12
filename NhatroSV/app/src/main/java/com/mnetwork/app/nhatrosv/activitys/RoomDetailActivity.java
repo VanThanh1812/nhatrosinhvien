@@ -1,9 +1,9 @@
 package com.mnetwork.app.nhatrosv.activitys;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -11,12 +11,16 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.mnetwork.app.nhatrosv.R;
 import com.mnetwork.app.nhatrosv.database.MyDatabaseHelper;
 import com.mnetwork.app.nhatrosv.model.HouseOwner;
@@ -24,9 +28,6 @@ import com.mnetwork.app.nhatrosv.model.ImageRoom;
 import com.mnetwork.app.nhatrosv.model.MotelRoom;
 import com.mnetwork.app.nhatrosv.staticvalues.StaticVariables;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 public class RoomDetailActivity extends AppCompatActivity {
@@ -68,6 +69,7 @@ public class RoomDetailActivity extends AppCompatActivity {
         });
 
         db=new MyDatabaseHelper(this);
+
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsed);
 
         getModels();
@@ -76,6 +78,26 @@ public class RoomDetailActivity extends AppCompatActivity {
 
         setBackgroundForCollapsingToolbarLayout();
 
+        setInfoRoom();
+
+    }
+
+    private void setInfoRoom() {
+        TextView tv_detai_acr = (TextView) findViewById(R.id.tv_detail_acr);
+        TextView tv_detail_addr = (TextView) findViewById(R.id.tv_detail_addr);
+        TextView tv_detail_electric = (TextView) findViewById(R.id.tv_detail_electric);
+        TextView tv_detail_water = (TextView) findViewById(R.id.tv_detail_water);
+        TextView tv_detail_price = (TextView) findViewById(R.id.tv_detail_pricehouse);
+        TextView tv_detail_describe = (TextView) findViewById(R.id.tv_detail_describe);
+        TextView tv_detail_style = (TextView) findViewById(R.id.tv_detail_type);
+
+        tv_detai_acr.setText(String.valueOf(motelRoom.getRoom_acreage())+" m2");
+        tv_detail_addr.setText(motelRoom.getRoom_address());
+        tv_detail_electric.setText(String.valueOf(motelRoom.getRoom_electric_price())+" VNĐ/kWh");
+        tv_detail_water.setText(String.valueOf(motelRoom.getRoom_water_price())+" VNĐ/m3 nước");
+        tv_detail_price.setText(String.valueOf(motelRoom.getRoom_price())+" triệu VNĐ");
+        tv_detail_describe.setText(motelRoom.getRoom_describe());
+        tv_detail_style.setText(motelRoom.getRoom_type());
     }
 
     private void getModels() {
@@ -90,23 +112,29 @@ public class RoomDetailActivity extends AppCompatActivity {
     }
 
     private void setBackgroundForCollapsingToolbarLayout() {
+
+//        collapsingToolbarLayout.setBackgroundColor(getColor(R.color.cardview_dark_background));
+
         ImageView iv_room_first = (ImageView) findViewById(R.id.iv_room_first);
-        //Glide.with(this).load(arr_imgRoom.get(0)).centerCrop().into(iv_room_first);
+
+        Glide.with(this).load(arr_imgRoom.get(0).getImage_link()).centerCrop().into(iv_room_first);
+
 //        iv_room_first.setImageDrawable(getDrawable(R.drawable.com_facebook_close));
-        try {
-            URL url = new URL(arr_imgRoom.get(0).toString());
-            iv_room_first.setImageBitmap(BitmapFactory.decodeStream(url.openConnection().getInputStream()));
-
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            URL url = new URL(arr_imgRoom.get(0).toString());
+//            iv_room_first.setImageBitmap(BitmapFactory.decodeStream(url.openConnection().getInputStream()));
+//
+//
+//        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
     }
 
     private void setTitleLayout() {
+
         TextView tv_detail_title = (TextView) findViewById(R.id.tv_detail_title);
         TextView tv_detail_title_addr = (TextView) findViewById(R.id.tv_detail_title_addr);
 
@@ -158,5 +186,42 @@ public class RoomDetailActivity extends AppCompatActivity {
     }
 
     public void showInfoOwner(View view) {
+        Dialog builder = new Dialog(this);
+        View v = LayoutInflater.from(this).inflate(R.layout.dialog_owner,null);
+        builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setDataforView(v,builder);
+        builder.setContentView(v);
+        builder.show();
+    }
+
+    private void setDataforView(final View v, final Dialog aBuilder) {
+        TextView tv_dialog_addr = (TextView) v.findViewById(R.id.tv_dialog_addr);
+        TextView tv_dialog_age = (TextView) v.findViewById(R.id.tv_dialog_age);
+        TextView tv_dialog_phone = (TextView) v.findViewById(R.id.tv_dialog_phone);
+        TextView tv_dialog_email = (TextView) v.findViewById(R.id.tv_dialog_email);
+        TextView tv_dialog_title = (TextView) v.findViewById(R.id.tv_dialog_title);
+
+        tv_dialog_addr.setText(houseOwner.getOwner_address());
+        tv_dialog_age.setText(String.valueOf(houseOwner.getOwner_age()));
+        tv_dialog_phone.setText(houseOwner.getOwner_phone());
+        tv_dialog_title.setText(houseOwner.getOwner_name());
+        tv_dialog_email.setText(houseOwner.getOwner_email());
+
+        Button bt_dialog_call = (Button) v.findViewById(R.id.bt_dialog_call);
+        Button bt_dialog_cncel = (Button) v.findViewById(R.id.bt_dialog_cancel);
+
+        bt_dialog_call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callOwner(view);
+            }
+        });
+
+        bt_dialog_cncel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                aBuilder.dismiss();
+            }
+        });
     }
 }

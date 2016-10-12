@@ -1,18 +1,21 @@
 package com.mnetwork.app.nhatrosv.controller;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.mnetwork.app.nhatrosv.R;
+import com.mnetwork.app.nhatrosv.activitys.LoginActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,12 +71,9 @@ public class ParseJsonLogin {
                                 }).show();
                             }else {
                                 activity.setTitle("Hi, guy");
-                                Snackbar.make(activity.getCurrentFocus(),"Tạm thời chưa lấy được info",Snackbar.LENGTH_SHORT).setAction("Cancel", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-
-                                    }
-                                }).show();
+                                Toast.makeText(activity, "Error connect internet", Toast.LENGTH_SHORT).show();
+                                Intent i = new Intent(activity, LoginActivity.class);
+                                activity.startActivity(i);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

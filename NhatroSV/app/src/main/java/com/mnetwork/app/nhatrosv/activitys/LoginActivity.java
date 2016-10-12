@@ -43,25 +43,8 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.d("TagResult",loginResult.toString());
-                String accessToken = loginResult.getAccessToken().getToken();
-                Log.d("token",accessToken);
+
                 goMainApp();
-                /*GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) {
-                        Log.d("loginactivity",response.toString());
-                        //
-                        Log.d("json",object.toString());
-
-
-
-                    }
-                });
-                Bundle parameters=new Bundle();
-                parameters.putString("fields","id,first_name,last_name,email,gender,birthday,location");
-                request.setParameters(parameters);
-                request.executeAsync();*/
 
             }
 
