@@ -107,8 +107,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void loginFacebook (){
+
         if (AccessToken.getCurrentAccessToken() == null){
+
             goLoginActivity();
+
         }else {
             /*
             * TODO:get info

@@ -50,7 +50,6 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onCancel() {
-
                 Toast.makeText(LoginActivity.this, "Login bị hủy", Toast.LENGTH_SHORT).show();
             }
 

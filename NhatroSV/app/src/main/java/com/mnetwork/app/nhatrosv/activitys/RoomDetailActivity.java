@@ -1,4 +1,4 @@
-package com.mnetwork.app.nhatrosv.activitys;
+    package com.mnetwork.app.nhatrosv.activitys;
 
 import android.Manifest;
 import android.app.Dialog;
@@ -10,6 +10,9 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +25,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.mnetwork.app.nhatrosv.R;
+import com.mnetwork.app.nhatrosv.custom.ListImageRecyclerAdapter;
+import com.mnetwork.app.nhatrosv.custom.RecyclerItemClickListener;
 import com.mnetwork.app.nhatrosv.database.MyDatabaseHelper;
 import com.mnetwork.app.nhatrosv.model.HouseOwner;
 import com.mnetwork.app.nhatrosv.model.ImageRoom;
@@ -80,6 +85,48 @@ public class RoomDetailActivity extends AppCompatActivity {
 
         setInfoRoom();
 
+        setListImage();
+
+    }
+
+    private void setListImage() {
+
+        final ArrayList<String> arr_link = new ArrayList<>();
+
+        for (int i=0;i<arr_imgRoom.size();i++){
+            arr_link.add(arr_imgRoom.get(i).getImage_link());
+        }
+
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rcv_listimage);
+
+        recyclerView.setLayoutManager(manager);
+
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        recyclerView.setAdapter(new ListImageRecyclerAdapter(this,arr_imgRoom));
+
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(RoomDetailActivity.this, ViewImageActivity.class);
+
+                //intent.putParcelableArrayListExtra("data",  finalData);
+
+                intent.putStringArrayListExtra("listlink",arr_link);
+
+                intent.putExtra("position", position);
+
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongItemClick(View view, int position) {
+
+            }
+        }));
+
     }
 
     private void setInfoRoom() {
@@ -101,7 +148,9 @@ public class RoomDetailActivity extends AppCompatActivity {
     }
 
     private void getModels() {
+
         Intent i =getIntent();
+
         marker_title = i.getStringExtra("room_id").split(StaticVariables.split);
 
         motelRoom = db.getMotelRoomById(Integer.parseInt(marker_title[0]));
@@ -109,6 +158,7 @@ public class RoomDetailActivity extends AppCompatActivity {
         arr_imgRoom = db.getListImageRoomForRoom(motelRoom.getRoom_id());
 
         houseOwner = db.getOwner(motelRoom.getRoom_id_owner());
+
     }
 
     private void setBackgroundForCollapsingToolbarLayout() {
@@ -118,18 +168,6 @@ public class RoomDetailActivity extends AppCompatActivity {
         ImageView iv_room_first = (ImageView) findViewById(R.id.iv_room_first);
 
         Glide.with(this).load(arr_imgRoom.get(0).getImage_link()).centerCrop().into(iv_room_first);
-
-//        iv_room_first.setImageDrawable(getDrawable(R.drawable.com_facebook_close));
-//        try {
-//            URL url = new URL(arr_imgRoom.get(0).toString());
-//            iv_room_first.setImageBitmap(BitmapFactory.decodeStream(url.openConnection().getInputStream()));
-//
-//
-//        } catch (MalformedURLException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
     }
 

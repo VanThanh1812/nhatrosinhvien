@@ -73,7 +73,7 @@ public class ParseJsonLogin {
                                 activity.setTitle("Hi, guy");
                                 Toast.makeText(activity, "Error connect internet", Toast.LENGTH_SHORT).show();
                                 Intent i = new Intent(activity, LoginActivity.class);
-                                activity.startActivity(i);
+                                //activity.startActivity(i);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
