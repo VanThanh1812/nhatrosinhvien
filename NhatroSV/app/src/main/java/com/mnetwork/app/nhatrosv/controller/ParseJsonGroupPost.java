@@ -54,7 +54,7 @@ public class ParseJsonGroupPost {
 
     public GroupPost getGroupPost (JSONObject object) {
         GroupPost post = new GroupPost();
-        if (object == null ) return null;
+        if ((object == null)&(new FilterPostFacebook(object.optString("message")).checkPost()) ) return null;
         /*
         * TODO: parse post
         * {

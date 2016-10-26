@@ -49,7 +49,7 @@ public class CommentsAdapter extends ArrayAdapter<GroupPost> {
         TextView txt_listhouse_message = (TextView) convertView.findViewById(R.id.txt_listhouse_message);
         TextView txt_listhouse_updatetime = (TextView) convertView.findViewById(R.id.txt_listhouse_updatetime);
         Button btn_listpost_comments = (Button) convertView.findViewById(R.id.btn_listpost_comments);
-
+        Button btn_listpost_call = (Button) convertView.findViewById(R.id.btn_listpost_call);
         //Glide.with(context).load(arr_comment.get(position).getPost_full_picture()).centerCrop().into(img_listhouse_picture);
         txt_listhouse_name.setText(arr_comment.get(position).getPost_poster().getPoster_name());
         txt_listhouse_message.setText(arr_comment.get(position).getPost_message());
@@ -90,7 +90,7 @@ public class CommentsAdapter extends ArrayAdapter<GroupPost> {
                 });
 
         btn_listpost_comments.setVisibility(View.GONE);
-
+        btn_listpost_call.setVisibility(View.GONE);
 
         return convertView;
     }

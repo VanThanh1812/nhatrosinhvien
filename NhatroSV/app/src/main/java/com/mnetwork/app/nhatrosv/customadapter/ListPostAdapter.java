@@ -53,6 +53,7 @@ public class ListPostAdapter extends ArrayAdapter<GroupPost> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+
         if (convertView == null)
             convertView = LayoutInflater.from(context).inflate(R.layout.custom_list_post, null);
 
@@ -119,6 +120,7 @@ public class ListPostAdapter extends ArrayAdapter<GroupPost> {
         });
 
         return convertView;
+
     }
 
     private void callThreadPost(String post) {
@@ -131,7 +133,7 @@ public class ListPostAdapter extends ArrayAdapter<GroupPost> {
         Button bt_dialog_call = (Button) v.findViewById(R.id.bt_dialog_number_call);
         Button bt_dialog_cncel = (Button) v.findViewById(R.id.bt_dialog_number_cancel);
 
-        String format = "0[9|1][0-36-8][0-9]{7,8}";
+        String format = "0[9|1][0-36-8][\\s-\\s0-9\\.-\\.][\\s-\\s0-9\\.-\\.][\\s-\\s0-9\\.-\\.]{0,4}[\\s-\\s0-9\\.-\\.]{0,6}";
         Pattern pattern = Pattern.compile(format);
         Matcher matcher = pattern.matcher(post);
 
