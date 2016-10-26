@@ -1,4 +1,4 @@
-package com.mnetwork.app.nhatrosv.custom;
+package com.mnetwork.app.nhatrosv.customadapter;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -29,13 +29,15 @@ public class CustomInfoWindow implements GoogleMap.InfoWindowAdapter {
 
     @Override
     public View getInfoContents(Marker marker) {
+
         View v = LayoutInflater.from(activity).inflate(R.layout.custom_maker,null);
 
-        // snippet =  link + address
         String[] snippet = marker.getSnippet().split(StaticVariables.split);
+
         String[] title = marker.getTitle().split(StaticVariables.split);
 
         ImageView img = (ImageView) v.findViewById(R.id.marker_image);
+
         TextView txt_address = (TextView) v.findViewById(R.id.marker_address);
 
         TextView txt_title = (TextView) v.findViewById(R.id.marker_title);
@@ -45,6 +47,7 @@ public class CustomInfoWindow implements GoogleMap.InfoWindowAdapter {
         if (!snippet[1].equals(null)) txt_address.setText(snippet[1]);
 
         txt_title.setText(title[1]);
+
         txt_address.setSelected(true);
 
         return v;

@@ -1,4 +1,4 @@
-package com.mnetwork.app.nhatrosv.custom;
+package com.mnetwork.app.nhatrosv.customadapter;
 
 import android.app.Activity;
 import android.content.Intent;

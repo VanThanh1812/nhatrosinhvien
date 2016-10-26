@@ -1,4 +1,4 @@
-package com.mnetwork.app.nhatrosv.custom;
+package com.mnetwork.app.nhatrosv.customadapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

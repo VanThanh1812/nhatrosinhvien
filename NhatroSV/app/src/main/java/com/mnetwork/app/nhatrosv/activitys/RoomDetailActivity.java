@@ -25,8 +25,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.mnetwork.app.nhatrosv.R;
-import com.mnetwork.app.nhatrosv.custom.ListImageRecyclerAdapter;
-import com.mnetwork.app.nhatrosv.custom.RecyclerItemClickListener;
+import com.mnetwork.app.nhatrosv.customadapter.ListImageRecyclerAdapter;
+import com.mnetwork.app.nhatrosv.customadapter.RecyclerItemClickListener;
 import com.mnetwork.app.nhatrosv.database.MyDatabaseHelper;
 import com.mnetwork.app.nhatrosv.model.HouseOwner;
 import com.mnetwork.app.nhatrosv.model.ImageRoom;
@@ -94,7 +94,9 @@ public class RoomDetailActivity extends AppCompatActivity {
         final ArrayList<String> arr_link = new ArrayList<>();
 
         for (int i=0;i<arr_imgRoom.size();i++){
+
             arr_link.add(arr_imgRoom.get(i).getImage_link());
+
         }
 
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
@@ -110,15 +112,15 @@ public class RoomDetailActivity extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent = new Intent(RoomDetailActivity.this, ViewImageActivity.class);
 
-                //intent.putParcelableArrayListExtra("data",  finalData);
+                Intent intent = new Intent(RoomDetailActivity.this, ViewImageActivity.class);
 
                 intent.putStringArrayListExtra("listlink",arr_link);
 
                 intent.putExtra("position", position);
 
                 startActivity(intent);
+
             }
 
             @Override
@@ -162,8 +164,6 @@ public class RoomDetailActivity extends AppCompatActivity {
     }
 
     private void setBackgroundForCollapsingToolbarLayout() {
-
-//        collapsingToolbarLayout.setBackgroundColor(getColor(R.color.cardview_dark_background));
 
         ImageView iv_room_first = (ImageView) findViewById(R.id.iv_room_first);
 
@@ -214,6 +214,7 @@ public class RoomDetailActivity extends AppCompatActivity {
     }
 
     public void sendMessage(View view) {
+
         Intent smsIntent = new Intent(Intent.ACTION_VIEW);
         smsIntent.setType("vnd.android-dir/mms-sms");
         smsIntent.putExtra("address", houseOwner.getOwner_phone());

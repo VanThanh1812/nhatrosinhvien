@@ -225,7 +225,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         ArrayList<ImageRoom> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-
         Cursor cursor =db.query(TABLE_IMAGEROOM,new String[]{IMAGE_COLUMN_ID,
                 IMAGE_COLUMN_IMAGELINK,
                 IMAGE_COLUMN_ROOMID},IMAGE_COLUMN_ROOMID+"=?",new String[]{String.valueOf(id_room)},null,null,null);
@@ -447,6 +446,13 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public void deleteMotelRoomById (int id){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_MOTELROOM,ROOM_COLUMN_ID+"=?",new String[]{String.valueOf(id)});
+        db.close();
+    }
+
+    public void deleteAllData (){
+        SQLiteDatabase db =this.getWritableDatabase();
+        String sql = "DELETE FROM Table_HouseOwner; DELETE FROM Table_ImageRoom; DELETE FROM Table_LatLog; DELETE FROM Table_MotelRoom";
+        db.execSQL(sql);
         db.close();
     }
 }

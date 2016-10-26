@@ -36,7 +36,7 @@ public class FirebaseMotelRoom {
         root.child(String.valueOf(id_owner)).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.d("nhatro",dataSnapshot.toString());
+                Log.d("idhouse",dataSnapshot.getKey());
                 Map<String,Object> map =dataSnapshot.getValue(Map.class);
                 MotelRoom room =new MotelRoom();
 

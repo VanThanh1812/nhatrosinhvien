@@ -1,16 +1,22 @@
-package com.mnetwork.app.nhatrosv.custom;
+package com.mnetwork.app.nhatrosv.customadapter;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,6 +35,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by vanthanhbk on 25/09/2016.
@@ -54,6 +62,7 @@ public class ListPostAdapter extends ArrayAdapter<GroupPost> {
         TextView txt_listhouse_message = (TextView) convertView.findViewById(R.id.txt_listhouse_message);
         TextView txt_listhouse_updatetime = (TextView) convertView.findViewById(R.id.txt_listhouse_updatetime);
         Button btn_listpost_comments = (Button) convertView.findViewById(R.id.btn_listpost_comments);
+        Button btn_listpost_call = (Button) convertView.findViewById(R.id.btn_listpost_call);
 
         Glide.with(context).load(arr_groupPosts.get(position).getPost_full_picture()).centerCrop().into(img_listhouse_picture);
         txt_listhouse_name.setText(arr_groupPosts.get(position).getPost_poster().getPoster_name());
@@ -84,8 +93,10 @@ public class ListPostAdapter extends ArrayAdapter<GroupPost> {
 
                                         }
                                     });
+
                                    Log.d("picture",profilePicUrl);
                                 }
+
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -100,14 +111,68 @@ public class ListPostAdapter extends ArrayAdapter<GroupPost> {
             }
         });
 
-        convertView.setOnClickListener(new View.OnClickListener() {
+        btn_listpost_call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                callThreadPost(arr_groupPosts.get(position).getPost_message());
             }
         });
 
         return convertView;
+    }
+
+    private void callThreadPost(String post) {
+
+        final Dialog builder = new Dialog(context);
+        View v = LayoutInflater.from(context).inflate(R.layout.dialog_number_phone,null);
+        builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        final EditText edt_number = (EditText) v.findViewById(R.id.edt_number);
+        Button bt_dialog_call = (Button) v.findViewById(R.id.bt_dialog_number_call);
+        Button bt_dialog_cncel = (Button) v.findViewById(R.id.bt_dialog_number_cancel);
+
+        String format = "0[9|1][0-36-8][0-9]{7,8}";
+        Pattern pattern = Pattern.compile(format);
+        Matcher matcher = pattern.matcher(post);
+
+        if (matcher.find()) {
+
+            edt_number.setText(matcher.group());
+
+        }else {
+            edt_number.setHint("Không nhận thấy số điện thoại, nếu bạn thấy thì hãy nhập vào và gọi");
+        }
+
+        bt_dialog_call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                callIntent.setData(Uri.parse("tel:" + edt_number.getText().toString()));
+                callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                getContext().startActivity(callIntent);
+            }
+        });
+
+        bt_dialog_cncel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                builder.dismiss();
+            }
+        });
+
+        builder.setContentView(v);
+        builder.show();
     }
 
     private void viewPopupComments (GroupPost post) {

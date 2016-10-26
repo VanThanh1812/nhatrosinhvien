@@ -17,14 +17,14 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.mnetwork.app.nhatrosv.R;
 import com.mnetwork.app.nhatrosv.controller.ParseJsonGroupPost;
-import com.mnetwork.app.nhatrosv.custom.ListPostAdapter;
+import com.mnetwork.app.nhatrosv.customadapter.ListPostAdapter;
 import com.mnetwork.app.nhatrosv.model.GroupPost;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ListHouseActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class ListPostFacebookActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private ListPostAdapter adapter;
     private SwipeRefreshLayout refreshLayout;
     private ListView listView;
@@ -81,7 +81,7 @@ public class ListHouseActivity extends AppCompatActivity implements SwipeRefresh
                             Log.d("groupf",json.optString("picture"));
                             ParseJsonGroupPost parseJsonGroupPost = new ParseJsonGroupPost(AccessToken.getCurrentAccessToken());
                             arrayList = parseJsonGroupPost.getListGroupPost(response.getJSONObject());
-                            adapter = new ListPostAdapter(ListHouseActivity.this, arrayList);
+                            adapter = new ListPostAdapter(ListPostFacebookActivity.this, arrayList);
                             listView.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
 
