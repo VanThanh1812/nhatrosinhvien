@@ -28,7 +28,6 @@ public class FirebaseHouseOwner {
 
     public static void getDataToDatabase (final Activity activity, final MyDatabaseHelper db,final GoogleMap myMap){
         Firebase.setAndroidContext(activity);
-
         Firebase firebase= new Firebase(HOUSEOWNER);
         firebase.addChildEventListener(new ChildEventListener() {
             @Override

@@ -9,7 +9,7 @@ import android.util.Log;
 
 import com.mnetwork.app.nhatrosv.model.HouseOwner;
 import com.mnetwork.app.nhatrosv.model.ImageRoom;
-import com.mnetwork.app.nhatrosv.model.Latlog_Room;
+import com.mnetwork.app.nhatrosv.model.LatlngRoom;
 import com.mnetwork.app.nhatrosv.model.MotelRoom;
 
 import java.util.ArrayList;
@@ -157,7 +157,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void addLatLogRoom (Latlog_Room latlog) {
+    public void addLatLogRoom (LatlngRoom latlog) {
         Log.d(TAG,"them toa do nha tro");
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -222,9 +222,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
 
     public ArrayList<ImageRoom> getListImageRoomForRoom (int id_room){
-        ArrayList<ImageRoom> list = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
 
+        ArrayList<ImageRoom> list = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor =db.query(TABLE_IMAGEROOM,new String[]{IMAGE_COLUMN_ID,
                 IMAGE_COLUMN_IMAGELINK,
@@ -238,14 +239,13 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         }
         else Log.d(TAG,"ko co ");
 
-
-
         return list;
+
     }
 
-    public ArrayList<Latlog_Room> getListLatlog_room (int id_room){
+    public ArrayList<LatlngRoom> getListLatlog_room (int id_room){
         SQLiteDatabase db = this.getReadableDatabase();
-        ArrayList<Latlog_Room> list = new ArrayList<>();
+        ArrayList<LatlngRoom> list = new ArrayList<>();
 
         Cursor cursor =db.query(TABLE_LATLOG,new String[]{LATLOG_COLUMN_ID,LATLOG_COLUMN_LOG,LATLOG_COLUMN_LAT},LATLOG_COLUMN_ID+"=?",
                 new String[]{String.valueOf(id_room)},null,null,null);
@@ -253,7 +253,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         if (cursor != null) {
             cursor.moveToFirst();
             do {
-                Latlog_Room latlogRoom= new Latlog_Room(cursor.getInt(0),Double.parseDouble(cursor.getString(1)),Double.parseDouble(cursor.getString(2)));
+                LatlngRoom latlogRoom= new LatlngRoom(cursor.getInt(0),Double.parseDouble(cursor.getString(1)),Double.parseDouble(cursor.getString(2)));
                 list.add(latlogRoom);
             } while (cursor.moveToNext());
         }
@@ -299,6 +299,41 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
+
+    public ArrayList<MotelRoom> getListRoomByPrice(String min, String max){
+        Log.d("price",min+ " "+max);
+        ArrayList<MotelRoom> listRoom = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM " + TABLE_MOTELROOM+" WHERE ("+ROOM_COLUMN_PRICE+" BETWEEN "+min+" AND "+max+")";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+
+            do {
+
+                MotelRoom room = new MotelRoom(cursor.getInt(0),//id
+                        cursor.getString(1),//address
+                        cursor.getString(2),//type
+                        Double.parseDouble(cursor.getString(3)),//gia phong
+                        Double.parseDouble(cursor.getString(4)),//gia dien
+                        Double.parseDouble(cursor.getString(5)),//gia nuoc
+                        Double.parseDouble(cursor.getString(6)),//dien tich
+                        cursor.getString(7),//mo ta
+                        cursor.getInt(8),// danh gia
+                        cursor.getString(9),//trang thai
+                        cursor.getInt(10));//id phong tro
+                listRoom.add(room);
+
+            } while (cursor.moveToNext());
+
+        }
+
+        else Log.d(TAG,"ko co room");
+
+        return listRoom;
+
+    }
     public MotelRoom getMotelRoomById (int id_room ){
         MotelRoom room = new MotelRoom();
 
@@ -363,7 +398,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 noteList.add(room);
             } while (cursor.moveToNext());
         }
-        else Log.d(TAG,"ko co ");
+        else Log.d(TAG,"ko co room");
 
 
         return noteList;
@@ -399,7 +434,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return db.update(TABLE_IMAGEROOM,values,IMAGE_COLUMN_ID+"=?",new String[]{String.valueOf(imageRoom.getImage_id())});
     }
 
-    public int updateLatlogRoom (Latlog_Room latlog){
+    public int updateLatlogRoom (LatlngRoom latlog){
         Log.d(TAG,"them toa do nha tro");
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -449,6 +484,20 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public void deleteMotelRoomById (int id){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_MOTELROOM,ROOM_COLUMN_ID+"=?",new String[]{String.valueOf(id)});
+        db.close();
+    }
+
+    public void deleteAllData (){
+        SQLiteDatabase db =this.getWritableDatabase();
+        String sql = "DELETE FROM Table_HouseOwner;";
+        String sql2=" DELETE FROM Table_ImageRoom;";
+        String sql3="DELETE FROM Table_LatLog;";
+        String sql4="DELETE FROM Table_MotelRoom;";
+
+        db.execSQL(sql);
+        db.execSQL(sql2);
+        db.execSQL(sql3);
+        db.execSQL(sql4);
         db.close();
     }
 }

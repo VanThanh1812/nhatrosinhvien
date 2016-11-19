@@ -9,7 +9,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.google.android.gms.maps.GoogleMap;
 import com.mnetwork.app.nhatrosv.database.MyDatabaseHelper;
-import com.mnetwork.app.nhatrosv.model.Latlog_Room;
+import com.mnetwork.app.nhatrosv.model.LatlngRoom;
 
 import java.util.Map;
 
@@ -30,18 +30,25 @@ public class FirebaseLatlog {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Log.d("tag",dataSnapshot.toString());
                 Map<String,Object> map= dataSnapshot.getValue(Map.class);
-                Latlog_Room latlog = new Latlog_Room(id_room,Double.parseDouble(map.get(LATLOG_LOG).toString()),Double.parseDouble(map.get(LATLOG_LAT).toString()));
-                MyDatabaseHelper db = new MyDatabaseHelper(activity);
-                db.addLatLogRoom(latlog);
 
-                FirebaseImage.getImage(activity,Integer.parseInt(dataSnapshot.getKey()),myMap);
 
+                if (!dataSnapshot.getKey().toString().equals(null)){
+
+                    LatlngRoom latlog = new LatlngRoom(Integer.parseInt(dataSnapshot.getKey()),Double.parseDouble(map.get(LATLOG_LOG).toString()),Double.parseDouble(map.get(LATLOG_LAT).toString()));
+                    MyDatabaseHelper db = new MyDatabaseHelper(activity);
+                    db.addLatLogRoom(latlog);
+
+                //cha co tac dung meo gi het
+
+                    FirebaseImage.getImage(activity,Integer.parseInt(dataSnapshot.getKey()),myMap);
+
+                }
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Map<String,Object> map= dataSnapshot.getValue(Map.class);
-                Latlog_Room latlog = new Latlog_Room(id_room,Double.parseDouble(map.get(LATLOG_LOG).toString()),Double.parseDouble(map.get(LATLOG_LAT).toString()));
+                LatlngRoom latlog = new LatlngRoom(id_room,Double.parseDouble(map.get(LATLOG_LOG).toString()),Double.parseDouble(map.get(LATLOG_LAT).toString()));
                 MyDatabaseHelper db = new MyDatabaseHelper(activity);
                 db.updateLatlogRoom(latlog);
             }

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:rsb="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/tv_dialog_title"
+        android:paddingTop="24dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingBottom="10dp"
+        android:textStyle="bold"
+        android:textSize="24dp"
+        android:textColor="@color/txtcolor"
+        android:text="Chọn tiêu chí nhà trọ"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:padding="12dp"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:padding="15dp"
+            android:layout_marginLeft="8dp"
+            android:background="@drawable/ic_house_price"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="#263238"
+            android:text="  Giá phòng: "/>
+        <TextView
+            android:id="@+id/tv_detail_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="#263238"
+            android:text="0.8 đến 10.0 triệu"/>
+    </LinearLayout>
+
+    <com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar
+        android:id="@+id/pricebar_with_label"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_height="60dp"
+        rsb:absoluteMinValue="0.8"
+        rsb:absoluteMaxValue="10.0"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        />
+    <!--<TableRow
+        android:layout_width="match_parent"
+        android:gravity="center|right"
+        android:layout_height="50dp">
+        <Button android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:textColor="#ffffff"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:paddingLeft="20dp"
+            android:id="@+id/bt_ok"
+            android:paddingRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@null"
+            android:text="OK"/>
+
+        <Button android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:textColor="#ffffff"
+            android:textSize="18dp"
+            android:id="@+id/bt_cancel"
+            android:textStyle="bold"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@null"
+            android:text="Cancel"/>
+
+    </TableRow>-->
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="18dp"
+        android:gravity="center|right">
+        <Button
+            android:id="@+id/bt_dialog_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:textColor="#03a9f4"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:background="?selectableItemBackground"
+            android:text="Cancel"
+            android:textSize="14dp"
+            android:layout_marginBottom="10dp"/>
+        <Button
+            android:id="@+id/bt_dialog_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:background="?selectableItemBackground"
+            android:textSize="14dp"
+            android:textColor="#03a9f4"
+            android:text="Lọc ngay"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_marginBottom="10dp"
+            />
+    </TableRow>
+
+
+</LinearLayout>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginLeft="12dp"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp"
+            android:text="Số điện thoại"/>
+
+        <EditText
+            android:id="@+id/edt_number"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:paddingLeft="12dp"
+            android:minHeight="56dp"
+            android:maxLines="5"
+            android:scrollbars="vertical"
+            android:inputType="textMultiLine"
+            android:textSize="16dp"
+            android:maxLength="400"
+            />
+    </LinearLayout>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center|right">
+        <Button
+            android:id="@+id/bt_dialog_number_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:textColor="#03a9f4"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:background="?selectableItemBackground"
+            android:text="Cancel"
+            android:textSize="14dp"
+            android:layout_marginBottom="10dp"/>
+        <Button
+            android:id="@+id/bt_dialog_number_call"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:background="?selectableItemBackground"
+            android:textSize="14dp"
+            android:textColor="#03a9f4"
+            android:text="CALL"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_marginBottom="10dp"
+            />
+    </TableRow>
+
+</LinearLayout>

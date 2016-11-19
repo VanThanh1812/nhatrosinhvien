@@ -11,10 +11,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.mnetwork.app.nhatrosv.custom.CustomInfoWindow;
+import com.mnetwork.app.nhatrosv.customadapter.CustomInfoWindow;
 import com.mnetwork.app.nhatrosv.database.MyDatabaseHelper;
+import com.mnetwork.app.nhatrosv.model.HouseOwner;
 import com.mnetwork.app.nhatrosv.model.ImageRoom;
-import com.mnetwork.app.nhatrosv.model.Latlog_Room;
+import com.mnetwork.app.nhatrosv.model.LatlngRoom;
 import com.mnetwork.app.nhatrosv.model.MotelRoom;
 import com.mnetwork.app.nhatrosv.staticvalues.StaticVariables;
 
@@ -47,6 +48,7 @@ public class FirebaseImage {
 
                 setValuesOnline(activity,id_room,myMap,db);
 
+                if (StaticVariables.progessDialog.isShowing()) StaticVariables.progessDialog.dismiss();
             }
 
             @Override
@@ -82,17 +84,21 @@ public class FirebaseImage {
     }
 
     private static void setValuesOnline (Activity activity,int id_room, GoogleMap myMap,MyDatabaseHelper db){
-        MotelRoom room = db.getMotelRoomById(id_room);
-        ImageRoom imageRoom = db.getListImageRoomForRoom(room.getRoom_id()).get(0);
-        Latlog_Room latlogRoom =db.getListLatlog_room(room.getRoom_id()).get(0);
-        // snippet =  link + price + electric + water + acr
 
-        String marker_title = room.getRoom_type();
-        String marker_snippet = imageRoom.getImage_link()+
-                StaticVariables.split+room.getRoom_price()+
-                StaticVariables.split+room.getRoom_electric_price()+
-                StaticVariables.split+room.getRoom_water_price()+
-                StaticVariables.split+room.getRoom_acreage();
+        MotelRoom room = db.getMotelRoomById(id_room);
+
+        ImageRoom imageRoom = db.getListImageRoomForRoom(room.getRoom_id()).get(0);
+
+        LatlngRoom latlogRoom =db.getListLatlog_room(room.getRoom_id()).get(0);
+        // snippet =  link + price + electric + water + acr
+        HouseOwner owner = db.getOwner(room.getRoom_id_owner());
+        String marker_title = String.valueOf(room.getRoom_id())+StaticVariables.split+room.getRoom_type();
+
+        String marker_snippet = imageRoom.getImage_link() +
+                StaticVariables.split + room.getRoom_address() +
+                StaticVariables.split + owner.getOwner_phone() +
+                StaticVariables.split + room.getRoom_id()+
+                StaticVariables.split + room.getRoom_price();
 
         MarkerOptions options=new MarkerOptions();
 
@@ -103,6 +109,7 @@ public class FirebaseImage {
 
         if (myMap != null){
             myMap.addMarker(options);
+            Log.d("addhouseonline",options.getTitle()+"  "+String.valueOf(latlogRoom.getLatlog_log()));
         }else Log.d("check","null roi");
 
         myMap.setInfoWindowAdapter(new CustomInfoWindow(activity));

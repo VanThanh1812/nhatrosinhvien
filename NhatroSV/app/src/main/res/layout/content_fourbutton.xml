@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:background="@color/com_facebook_button_background_color_focused">
+        <LinearLayout
+            android:onClick="callOwner"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:background="?selectableItemBackground"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/ic_phone"
+                android:layout_marginTop="12dp"
+                android:layout_gravity="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:textColor="@color/com_facebook_button_background_color"
+                android:textStyle="bold"
+                android:text="GỌI ĐIỆN"/>
+        </LinearLayout>
+        <LinearLayout
+            android:onClick="sendMessage"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:background="?selectableItemBackground"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/ic_message_draw"
+                android:layout_marginTop="12dp"
+                android:layout_gravity="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:textColor="@color/com_facebook_button_background_color"
+                android:textStyle="bold"
+                android:text="TIN NHẮN"/>
+        </LinearLayout>
+        <LinearLayout
+            android:onClick="showFeedback"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:background="?selectableItemBackground"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/ic_feedback"
+                android:layout_marginTop="12dp"
+                android:layout_gravity="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:textColor="@color/com_facebook_button_background_color"
+                android:textStyle="bold"
+                android:text="PHẢN HỒI"/>
+        </LinearLayout>
+        <LinearLayout
+            android:onClick="showInfoOwner"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:background="?selectableItemBackground"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/ic_info"
+                android:layout_marginTop="12dp"
+                android:layout_gravity="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:textColor="@color/com_facebook_button_background_color"
+                android:textStyle="bold"
+                android:text="LIÊN HỆ"/>
+        </LinearLayout>
+    </TableRow>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rcv_listimage"
+        android:background="@color/com_facebook_button_background_color_focused"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scrollbars="horizontal" />
+</LinearLayout>
