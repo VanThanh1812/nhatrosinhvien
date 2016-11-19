@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <ImageView
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:id="@+id/marker_image"
         android:background="@drawable/ic_app" />
     <LinearLayout
@@ -23,19 +23,29 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/marker_title"
             android:textStyle="bold"
-            android:text="Title"/>
+            android:text="Xóm trọ"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#424242"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/marker_price"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            android:text="1.5 triệu"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#424242"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/marker_address"
-            android:textStyle="bold"
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
             android:marqueeRepeatLimit="marquee_forever"
             android:singleLine="true"
-            android:text="Title"/>
+            android:text="Số 1, Lương Yên, Hà Nội"/>
     </LinearLayout>
 
 </LinearLayout>

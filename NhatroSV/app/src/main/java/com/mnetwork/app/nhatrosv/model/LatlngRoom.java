@@ -49,4 +49,5 @@ public class LatlngRoom {
     public void setLatlog_log(double latlog_log) {
         this.latlog_log = latlog_log;
     }
+
 }

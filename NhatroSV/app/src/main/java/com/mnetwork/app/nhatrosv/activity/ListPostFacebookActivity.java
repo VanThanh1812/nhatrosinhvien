@@ -1,4 +1,4 @@
-package com.mnetwork.app.nhatrosv.activitys;
+package com.mnetwork.app.nhatrosv.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -64,8 +64,9 @@ public class ListPostFacebookActivity extends AppCompatActivity implements Swipe
 
     private void fetchMovies(final Context context) {
 
-        refreshLayout.setRefreshing(true);
 
+        refreshLayout.setRefreshing(true);
+        refreshLayout.setProgressBackgroundColorSchemeResource(R.color.loadface);
         Bundle para2=new Bundle();
         para2.putString("fields","id,from,message,updated_time,picture,full_picture,comments");
         new GraphRequest(AccessToken.getCurrentAccessToken(),"774199205937037/feed",
@@ -75,7 +76,9 @@ public class ListPostFacebookActivity extends AppCompatActivity implements Swipe
 
                     @Override
                     public void onCompleted(GraphResponse response) {
+
                         JSONObject json =response.getJSONObject();
+
                         if (response.getJSONObject()!=(null)){
 
                             Log.d("groupf",json.optString("picture"));
@@ -86,6 +89,7 @@ public class ListPostFacebookActivity extends AppCompatActivity implements Swipe
                             adapter.notifyDataSetChanged();
 
                             refreshLayout.setRefreshing(false);
+
                         }
                     }
 

@@ -16,7 +16,9 @@ import com.mnetwork.app.nhatrosv.staticvalues.StaticVariables;
  * Created by vanthanhbk on 31/08/2016.
  */
 public class CustomInfoWindow implements GoogleMap.InfoWindowAdapter {
+
     private Activity activity;
+
     public CustomInfoWindow(Activity activity) {
         this.activity=activity;
 
@@ -42,9 +44,13 @@ public class CustomInfoWindow implements GoogleMap.InfoWindowAdapter {
 
         TextView txt_title = (TextView) v.findViewById(R.id.marker_title);
 
+        TextView txt_price = (TextView) v.findViewById(R.id.marker_price);
+
         Glide.with(activity).load(snippet[0]).centerCrop().into(img);
 
         if (!snippet[1].equals(null)) txt_address.setText(snippet[1]);
+
+        if (!snippet[4].equals(null)) txt_price.setText(snippet[4]+" triệu");
 
         txt_title.setText(title[1]);
 

@@ -17,12 +17,14 @@ import java.util.ArrayList;
 public class ListImageRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
 
     private ArrayList<ImageRoom> imageRooms;
+
     private Activity activity;
 
     public ListImageRecyclerAdapter(Activity activity, ArrayList<ImageRoom> imageRooms) {
 
         this.activity = activity;
         this.imageRooms = imageRooms;
+
     }
 
     @Override

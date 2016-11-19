@@ -3,23 +3,24 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_house"
             android:icon="@drawable/ic_homemap"
-            android:title="Hiển thị nhà trọ" />
+            android:title="Bản đồ nhà trọ" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_location_fr"
             android:icon="@drawable/ic_friend"
-            android:title="Địa điểm bạn bè" />
+            android:title="Top phòng trọ" />
+        <item
+            android:id="@+id/nav_share"
+            android:icon="@drawable/ic_menu_share"
+            android:title="Giới thiệu" />
     </group>
 
     <item android:title="Communicate">
         <menu>
+
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_logout"
                 android:icon="@drawable/logout"
                 android:title="Đăng xuất" />
         </menu>

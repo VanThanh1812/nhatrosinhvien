@@ -2,16 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:icon="@drawable/filter2"
+        android:icon="@android:drawable/ic_menu_search"
         android:id="@+id/action_filter"
         android:title="Lọc nhà trọ"
         android:orderInCategory="100"
         app:showAsAction="always" />
     <item
         android:title="Refresh data"
-        android:icon="@drawable/reload"
+        android:icon="@android:drawable/ic_menu_rotate"
         android:id="@+id/action_refesh"
         android:orderInCategory="100"
         app:showAsAction="always" />
-
+    <item
+        android:title="Thêm nhà trọ"
+        android:icon="@android:drawable/ic_menu_add"
+        android:id="@+id/action_add"
+        android:orderInCategory="100"
+        app:showAsAction="always" />
 </menu>

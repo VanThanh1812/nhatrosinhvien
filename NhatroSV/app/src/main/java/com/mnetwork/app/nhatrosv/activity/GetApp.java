@@ -1,4 +1,4 @@
-package com.mnetwork.app.nhatrosv.activitys;
+package com.mnetwork.app.nhatrosv.activity;
 
 import android.app.Application;
 

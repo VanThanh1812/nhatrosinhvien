@@ -1,4 +1,4 @@
-package com.mnetwork.app.nhatrosv.activitys;
+package com.mnetwork.app.nhatrosv.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -47,7 +47,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
 
                 goMainApp();
-
             }
 
             @Override

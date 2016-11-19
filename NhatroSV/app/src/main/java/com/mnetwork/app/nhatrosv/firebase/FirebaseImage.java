@@ -11,9 +11,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.mnetwork.app.nhatrosv.R;
 import com.mnetwork.app.nhatrosv.customadapter.CustomInfoWindow;
 import com.mnetwork.app.nhatrosv.database.MyDatabaseHelper;
+import com.mnetwork.app.nhatrosv.model.HouseOwner;
 import com.mnetwork.app.nhatrosv.model.ImageRoom;
 import com.mnetwork.app.nhatrosv.model.LatlngRoom;
 import com.mnetwork.app.nhatrosv.model.MotelRoom;
@@ -48,6 +48,7 @@ public class FirebaseImage {
 
                 setValuesOnline(activity,id_room,myMap,db);
 
+                if (StaticVariables.progessDialog.isShowing()) StaticVariables.progessDialog.dismiss();
             }
 
             @Override
@@ -90,21 +91,21 @@ public class FirebaseImage {
 
         LatlngRoom latlogRoom =db.getListLatlog_room(room.getRoom_id()).get(0);
         // snippet =  link + price + electric + water + acr
-
+        HouseOwner owner = db.getOwner(room.getRoom_id_owner());
         String marker_title = String.valueOf(room.getRoom_id())+StaticVariables.split+room.getRoom_type();
 
-        String marker_snippet = imageRoom.getImage_link()+
-                StaticVariables.split+room.getRoom_price()+
-                StaticVariables.split+room.getRoom_electric_price()+
-                StaticVariables.split+room.getRoom_water_price()+
-                StaticVariables.split+room.getRoom_acreage();
+        String marker_snippet = imageRoom.getImage_link() +
+                StaticVariables.split + room.getRoom_address() +
+                StaticVariables.split + owner.getOwner_phone() +
+                StaticVariables.split + room.getRoom_id()+
+                StaticVariables.split + room.getRoom_price();
 
         MarkerOptions options=new MarkerOptions();
 
         options.snippet(marker_snippet);
         options.title(marker_title);
         options.position(new LatLng(latlogRoom.getLatlog_log(),latlogRoom.getLatlog_lat()));
-        options.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_marker));
+        options.icon(BitmapDescriptorFactory.defaultMarker());
 
         if (myMap != null){
             myMap.addMarker(options);

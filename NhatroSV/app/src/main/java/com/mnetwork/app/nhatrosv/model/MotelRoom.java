@@ -136,4 +136,5 @@ public class MotelRoom {
     public void setRoom_water_price(double room_water_price) {
         this.room_water_price = room_water_price;
     }
+
 }

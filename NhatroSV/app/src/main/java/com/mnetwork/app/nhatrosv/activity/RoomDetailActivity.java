@@ -1,14 +1,15 @@
-    package com.mnetwork.app.nhatrosv.activitys;
+    package com.mnetwork.app.nhatrosv.activity;
 
-import android.Manifest;
-import android.app.Dialog;
+    import android.app.Dialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,28 +21,36 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.mnetwork.app.nhatrosv.R;
+import com.facebook.AccessToken;
+    import com.firebase.client.Firebase;
+    import com.mnetwork.app.nhatrosv.R;
 import com.mnetwork.app.nhatrosv.customadapter.ListImageRecyclerAdapter;
 import com.mnetwork.app.nhatrosv.customadapter.RecyclerItemClickListener;
 import com.mnetwork.app.nhatrosv.database.MyDatabaseHelper;
+import com.mnetwork.app.nhatrosv.model.Feedback;
+import com.mnetwork.app.nhatrosv.model.GPSTracker;
 import com.mnetwork.app.nhatrosv.model.HouseOwner;
 import com.mnetwork.app.nhatrosv.model.ImageRoom;
+import com.mnetwork.app.nhatrosv.model.LatlngRoom;
 import com.mnetwork.app.nhatrosv.model.MotelRoom;
 import com.mnetwork.app.nhatrosv.staticvalues.StaticVariables;
 
 import java.util.ArrayList;
 
-public class RoomDetailActivity extends AppCompatActivity {
-    private CollapsingToolbarLayout collapsingToolbarLayout;
-    private String[] marker_title;
-    private MotelRoom motelRoom;
-    private ArrayList<ImageRoom> arr_imgRoom;
-    private HouseOwner houseOwner;
-    MyDatabaseHelper db;
+    public class RoomDetailActivity extends AppCompatActivity {
+        private CollapsingToolbarLayout collapsingToolbarLayout;
+        private String[] marker_title;
+        private MotelRoom motelRoom;
+        private ArrayList<ImageRoom> arr_imgRoom;
+        private HouseOwner houseOwner;
+        MyDatabaseHelper db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,25 +60,32 @@ public class RoomDetailActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Phòng trọ");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        Firebase.setAndroidContext(this);
+
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent callIntent = new Intent(Intent.ACTION_CALL);
-                callIntent.setData(Uri.parse("tel:" + houseOwner.getOwner_phone()));
-                callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                GPSTracker gps =new GPSTracker(view.getContext());
+                if (gps.canGetLocation()){
+                    LatlngRoom latlngRoom = db.getListLatlog_room(motelRoom.getRoom_id()).get(0);
+                    Location latLng = gps.getLocation();
+                    String uri ="geo:"+String.valueOf(latLng.getLongitude())+","+String.valueOf(latLng.getLatitude())+"?q="+String.valueOf(latlngRoom.getLatlog_log())+","+String.valueOf(latlngRoom.getLatlog_lat())+" (";
+                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                            Uri.parse(uri + motelRoom.getRoom_address() + ")"));
+                    startActivity(intent);
+                }else {
+//                    Dialog builder = new Dialog(view.getContext());
+//                    View v = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_message,null);
+//                    TextView txt = (TextView) v.findViewById(R.id.tv_dialog_message);
+//                    txt.setText("Bạn cần bật GPS để chỉ đường từ chỗ của bạn");
+//                    builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                    builder.setContentView(v);
+//                    //builder.show();
+                    gps.showSettingsAlert();
 
-                if (ActivityCompat.checkSelfPermission(view.getContext() , Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
                 }
-                startActivity(callIntent);
             }
         });
 
@@ -196,20 +212,20 @@ public class RoomDetailActivity extends AppCompatActivity {
 
     // event onclick 4 linearlayout
     public void callOwner(View view) {
-        Intent callIntent = new Intent(Intent.ACTION_CALL);
+        Intent callIntent = new Intent(Intent.ACTION_DIAL);
         callIntent.setData(Uri.parse("tel:" + houseOwner.getOwner_phone()));
         callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Consider calling
+//            //    ActivityCompat#requestPermissions
+//            // here to request the missing permissions, and then overriding
+//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//            //                                          int[] grantResults)
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
+//            return;
+//        }
         startActivity(callIntent);
     }
 
@@ -219,12 +235,57 @@ public class RoomDetailActivity extends AppCompatActivity {
         smsIntent.setType("vnd.android-dir/mms-sms");
         smsIntent.putExtra("address", houseOwner.getOwner_phone());
         startActivity(smsIntent);
+
     }
 
     public void showFeedback(View view) {
+
+        Dialog builder = new Dialog(this);
+
+        View v = LayoutInflater.from(this).inflate(R.layout.dialog_feedback,null);
+
+        builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        RatingBar ratingBar = (RatingBar) v.findViewById(R.id.rate_feedback);
+
+        LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+
+        stars.getDrawable(2).setColorFilter(Color.parseColor("#03a9f4"), PorterDuff.Mode.SRC_ATOP);
+
+        builder.setContentView(v);
+
+        setEvent(v,builder);
+
+        builder.show();
+
     }
 
-    public void showInfoOwner(View view) {
+        private void setEvent(final View v, final Dialog builder) {
+            Button bt_feedback_cancel = (Button) v.findViewById(R.id.bt_feedback_cancel);
+            Button bt_feedback_send = (Button) v.findViewById(R.id.bt_feedback_send);
+
+            bt_feedback_cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    builder.dismiss();
+                }
+            });
+
+            bt_feedback_send.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    EditText et_feedback_message = (EditText) v.findViewById(R.id.et_feedback_message);
+                    RatingBar rate_feedback = (RatingBar) v.findViewById(R.id.rate_feedback);
+
+                    Feedback feedback = new Feedback(motelRoom.getRoom_id(), AccessToken.getCurrentAccessToken().getUserId(),String.valueOf(rate_feedback.getRating()),et_feedback_message.getText().toString());
+                    feedback.sendFeedback(v.getContext());
+                    builder.dismiss();
+
+                }
+            });
+        }
+        public void showInfoOwner(View view) {
         Dialog builder = new Dialog(this);
         View v = LayoutInflater.from(this).inflate(R.layout.dialog_owner,null);
         builder.requestWindowFeature(Window.FEATURE_NO_TITLE);

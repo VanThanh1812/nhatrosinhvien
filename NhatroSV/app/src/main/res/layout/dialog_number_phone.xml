@@ -46,14 +46,14 @@
             android:paddingRight="20dp"
             android:background="?selectableItemBackground"
             android:text="Cancel"
-            android:textSize="18dp"
+            android:textSize="14dp"
             android:layout_marginBottom="10dp"/>
         <Button
             android:id="@+id/bt_dialog_number_call"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:background="?selectableItemBackground"
-            android:textSize="18dp"
+            android:textSize="14dp"
             android:textColor="#03a9f4"
             android:text="CALL"
             android:paddingLeft="20dp"

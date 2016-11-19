@@ -222,7 +222,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
 
     public ArrayList<ImageRoom> getListImageRoomForRoom (int id_room){
+
         ArrayList<ImageRoom> list = new ArrayList<>();
+
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor =db.query(TABLE_IMAGEROOM,new String[]{IMAGE_COLUMN_ID,
@@ -238,6 +240,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         else Log.d(TAG,"ko co ");
 
         return list;
+
     }
 
     public ArrayList<LatlngRoom> getListLatlog_room (int id_room){
@@ -296,6 +299,41 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
+
+    public ArrayList<MotelRoom> getListRoomByPrice(String min, String max){
+        Log.d("price",min+ " "+max);
+        ArrayList<MotelRoom> listRoom = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM " + TABLE_MOTELROOM+" WHERE ("+ROOM_COLUMN_PRICE+" BETWEEN "+min+" AND "+max+")";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+
+            do {
+
+                MotelRoom room = new MotelRoom(cursor.getInt(0),//id
+                        cursor.getString(1),//address
+                        cursor.getString(2),//type
+                        Double.parseDouble(cursor.getString(3)),//gia phong
+                        Double.parseDouble(cursor.getString(4)),//gia dien
+                        Double.parseDouble(cursor.getString(5)),//gia nuoc
+                        Double.parseDouble(cursor.getString(6)),//dien tich
+                        cursor.getString(7),//mo ta
+                        cursor.getInt(8),// danh gia
+                        cursor.getString(9),//trang thai
+                        cursor.getInt(10));//id phong tro
+                listRoom.add(room);
+
+            } while (cursor.moveToNext());
+
+        }
+
+        else Log.d(TAG,"ko co room");
+
+        return listRoom;
+
+    }
     public MotelRoom getMotelRoomById (int id_room ){
         MotelRoom room = new MotelRoom();
 
@@ -451,8 +489,15 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     public void deleteAllData (){
         SQLiteDatabase db =this.getWritableDatabase();
-        String sql = "DELETE FROM Table_HouseOwner; DELETE FROM Table_ImageRoom; DELETE FROM Table_LatLog; DELETE FROM Table_MotelRoom";
+        String sql = "DELETE FROM Table_HouseOwner;";
+        String sql2=" DELETE FROM Table_ImageRoom;";
+        String sql3="DELETE FROM Table_LatLog;";
+        String sql4="DELETE FROM Table_MotelRoom;";
+
         db.execSQL(sql);
+        db.execSQL(sql2);
+        db.execSQL(sql3);
+        db.execSQL(sql4);
         db.close();
     }
 }

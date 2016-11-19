@@ -1,6 +1,7 @@
-package com.mnetwork.app.nhatrosv.activitys;
+package com.mnetwork.app.nhatrosv.activity;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -20,12 +21,16 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -43,13 +48,17 @@ import com.mnetwork.app.nhatrosv.customadapter.CustomInfoWindow;
 import com.mnetwork.app.nhatrosv.database.MyDatabaseHelper;
 import com.mnetwork.app.nhatrosv.firebase.FirebaseHouseOwner;
 import com.mnetwork.app.nhatrosv.model.GPSTracker;
+import com.mnetwork.app.nhatrosv.model.MotelRoom;
 import com.mnetwork.app.nhatrosv.staticvalues.StaticVariables;
+import com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private com.google.android.gms.maps.GoogleMap myMap;
     private ProgressDialog myProgress;
-    ImageView imgCenter;
+    FloatingActionMenu fab_menu;
 
     private static final String MYTAG = "MYTAG";
     Toolbar toolbar;
@@ -63,10 +72,15 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        StaticVariables.progessDialog = new ProgressDialog(this);
+        //request permission android sdk>=23
+//        ActivityCompat.requestPermissions(MainActivity.this,
+//                new String[]{Manifest.permission.ACCESS_NETWORK_STATE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},
+//                1);
 
         FloatingActionButton fab_view_post_facebook = (FloatingActionButton) findViewById(R.id.menu_list);
-        FloatingActionButton fab_add_house = (FloatingActionButton) findViewById(R.id.menu_add);
         FloatingActionButton fab_view_house = (FloatingActionButton) findViewById(R.id.menu_house);
+        fab_menu = (FloatingActionMenu) findViewById(R.id.menu_menu);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -76,6 +90,8 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_house);
+
 
         loginFacebook();
 
@@ -101,24 +117,13 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        fab_add_house.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(getCurrentFocus(),"Nothing",Snackbar.LENGTH_SHORT).setAction("Cancel", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        // nothing
-                    }
-                }).show();
-            }
-        });
     }
 
     private void loginFacebook (){
 
         if (AccessToken.getCurrentAccessToken() == null){
 
-            goLoginActivity();
+            goIntroActivity();
 
         }else {
             /*
@@ -153,14 +158,18 @@ public class MainActivity extends AppCompatActivity
 
 
 
-    private void goLoginActivity() {
-        Intent i = new Intent(this,LoginActivity.class);
+    private void goIntroActivity() {
+        Intent i = new Intent(this,IntroActivity.class);
         startActivity(i);
     }
 
     private void onMyMapReady(com.google.android.gms.maps.GoogleMap googleMap) {
 
         myMap = googleMap;
+
+        showFilter();
+
+        myMap.setBuildingsEnabled(true);
 
         myMap.setOnMapLoadedCallback(new com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback() {
             @Override
@@ -186,13 +195,22 @@ public class MainActivity extends AppCompatActivity
 
         myMap.setMyLocationEnabled(true);
 
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(20.985,105.85))
+                .zoom(12f)
+                .bearing(11)
+                .tilt(30)    // Sets the tilt of the camera to 30 degrees
+                .build();    // Creates a CameraPosition from the builder
+
+        myMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
         GPSTracker g =new GPSTracker(this);
 
         if (g.canGetLocation()){
 
             Log.d("location",String.valueOf(g.getLatitude())+"  "+String.valueOf(g.getLongitude()));
 
-            myMap.addMarker(new MarkerOptions().position(new LatLng(g.getLatitude(),g.getLongitude())).title("Bạn đang ở đây"+StaticVariables.split).snippet(StaticVariables.split+"Lat: "+String.valueOf(g.getLatitude())+"   Long: "+String.valueOf(g.getLongitude())).icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_marker)));
+            myMap.addMarker(new MarkerOptions().position(new LatLng(g.getLatitude(),g.getLongitude())).title("Bạn đang ở đây"+StaticVariables.split).snippet(StaticVariables.split+"Lat: "+String.valueOf(g.getLatitude())+"   Long: "+String.valueOf(g.getLongitude())).icon(BitmapDescriptorFactory.defaultMarker()));
 
             myMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(g.getLatitude(),g.getLongitude())));
 
@@ -202,29 +220,49 @@ public class MainActivity extends AppCompatActivity
 
             myMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(20.985,105.85)));
 
-            myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(20.985,105.85), 10f));
+            myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(20.985,105.85), 12f));
 
         }
 
 //        MyDatabaseHelper db = new MyDatabaseHelper(this);
 //        Log.d("testlatlng",String.valueOf(db.getListLatlog_room(3001).get(0).getLatlog_lat())+"   "+db.getMotelRoomById(3001).getRoom_id());
 
-        testData();
+        getDatabase();
 
     }
-    public void testData (){
+    public void getDatabase(){
 
         MyDatabaseHelper db = new MyDatabaseHelper(this);
+
         FirebaseHouseOwner.getDataToDatabase(this,db,myMap);
 
         if (db.getAllRoom().size() != 0){
-            MapControl.setMarker(this,myMap);
+            MapControl.setMarker(this,myMap,db.getAllRoom());
         }
 
         setEventMap(myMap);
     }
 
-    private void setEventMap(GoogleMap myMap) {
+
+    private void setEventMap(final GoogleMap myMap) {
+//
+//        ClusterManager<LatlngRoom> mClusterManager = new ClusterManager<>(this, myMap);
+//
+//        myMap.setOnCameraIdleListener(mClusterManager);
+//
+//        myMap.setOnMarkerClickListener(mClusterManager);
+//
+//        addItemCluster(mClusterManager);
+        myMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+
+                if (fab_menu.isOpened()){
+                    fab_menu.close(true);
+                }
+            }
+        });
+
         myMap.setInfoWindowAdapter(new CustomInfoWindow(this));
 
         myMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
@@ -241,7 +279,34 @@ public class MainActivity extends AppCompatActivity
             public void onInfoWindowClick(Marker marker) {
                 Intent i = new Intent(MainActivity.this, RoomDetailActivity.class);
                 i.putExtra("room_id",marker.getTitle());
+                if (fab_menu.isOpened()){
+                    fab_menu.close(true);
+                }
                 startActivity(i);
+
+            }
+        });
+
+        myMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(marker.getPosition())
+                        .zoom(12f)
+                        .bearing(0)
+                        .tilt(30)    // Sets the tilt of the camera to 30 degrees
+                        .build();    // Creates a CameraPosition from the builder
+
+                myMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+                marker.showInfoWindow();
+
+                if (fab_menu.isOpened()){
+                    fab_menu.close(true);
+                }
+
+                return true;
             }
         });
 
@@ -267,20 +332,10 @@ public class MainActivity extends AppCompatActivity
                         // snippet =  link + address+ sđt + room_id
 
 
-                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                        Intent callIntent = new Intent(Intent.ACTION_DIAL);
                         callIntent.setData(Uri.parse("tel:" + phone_no));
                         callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                            // TODO: Consider calling
-                            //    ActivityCompat#requestPermissions
-                            // here to request the missing permissions, and then overriding
-                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                            //                                          int[] grantResults)
-                            // to handle the case where the user grants the permission. See the documentation
-                            // for ActivityCompat#requestPermissions for more details.
-                            return;
-                        }
                         startActivity(callIntent);
                     }
                 });
@@ -295,11 +350,33 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
 
+                txt_danhgia.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Dialog builder = new Dialog(getApplicationContext());
+                        View v = LayoutInflater.from(getApplicationContext()).inflate(R.layout.dialog_feedback,null);
+                        builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        builder.setContentView(v);
+                        builder.show();
+                    }
+                });
+
                 builder.setView(v);
                 builder.show();
             }
         });
     }
+
+   /* private void addItemCluster(ClusterManager<LatlngRoom> manager) {
+        MyDatabaseHelper db = new MyDatabaseHelper(this);
+        ArrayList<MotelRoom> roomArrayList = db.getAllRoom();
+        int number_room = roomArrayList.size();
+
+        for (int i=0;i<number_room;i++){
+            LatlngRoom lnRoom =db.getListLatlog_room(roomArrayList.get(i).getRoom_id()).get(0);
+            manager.addItem(lnRoom);
+        }
+    }*/
 
 
     @Override
@@ -314,13 +391,12 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -328,16 +404,94 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_filter) {
+            showFilter();
             return true;
         }
 
         if (id ==R.id.action_refesh){
+            StaticVariables.progessDialog = new ProgressDialog(this);
+            StaticVariables.progessDialog.show();
             MyDatabaseHelper db = new MyDatabaseHelper(this);
+            myMap.clear();
             db.deleteAllData();
             FirebaseHouseOwner.getDataToDatabase(this, db ,myMap);
             return true;
         }
+
+        if (id == R.id.action_add){
+            final Dialog builder = new Dialog(this);
+            final View v = LayoutInflater.from(this).inflate(R.layout.dialog_message,null);
+
+            Button bt_dialog_access = (Button) v.findViewById(R.id.bt_dialog_access);
+
+            bt_dialog_access.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EditText et_dialog_key = (EditText) v.findViewById(R.id.et_dialog_keyaccess);
+                    if (et_dialog_key.getText().toString().trim().equals("believe_in_yourself")){
+                        Snackbar.make(v.getRootView(),"Success, có điều module chưa được xây dựng",Snackbar.LENGTH_SHORT).show();
+                    }else{
+                        Snackbar.make(v.getRootView(),"Fail, bạn không được cung cấp key như vậy",Snackbar.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+            Button bt_dialog_cncel = (Button) v.findViewById(R.id.bt_dialog_cancel);
+            bt_dialog_cncel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    builder.dismiss();
+                }
+            });
+
+            builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            builder.setContentView(v);
+            builder.show();
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showFilter(){
+        final Dialog builder = new Dialog(this);
+        View v = LayoutInflater.from(this).inflate(R.layout.dialog_filter,null);
+        builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        builder.setContentView(v);
+
+        final RangeSeekBar seekbar = (RangeSeekBar) v.findViewById(R.id.pricebar_with_label);
+        seekbar.setColorFilter(R.color.colorBlue);
+        seekbar.setRangeValues(0.8,10.0);
+        final TextView tv_price = (TextView) v.findViewById(R.id.tv_detail_price);
+
+        seekbar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener() {
+            @Override
+            public void onRangeSeekBarValuesChanged(RangeSeekBar bar, Object minValue, Object maxValue) {
+                tv_price.setText(String.valueOf(minValue)+" đến "+String.valueOf(maxValue)+" triệu");
+            }
+        });
+
+        Button bt_dialog_filter = (Button) v.findViewById(R.id.bt_dialog_filter);
+        Button bt_dialog_cncel = (Button) v.findViewById(R.id.bt_dialog_cancel);
+
+        bt_dialog_filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MyDatabaseHelper db = new MyDatabaseHelper(getApplication());
+                ArrayList<MotelRoom> arr_list = db.getListRoomByPrice(String.valueOf(seekbar.getSelectedMinValue()),String.valueOf(seekbar.getSelectedMaxValue()));
+                MapControl.setMarker(getApplicationContext(),myMap,arr_list);
+                builder.dismiss();
+                Toast.makeText(getApplicationContext(), "Done, có tất cả "+String.valueOf(arr_list.size())+" phòng", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        bt_dialog_cncel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                builder.dismiss();
+            }
+        });
+
+        builder.show();
+
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -346,19 +500,50 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_house) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_location_fr) {
 
         } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+            setFragment();
+        } else if (id == R.id.nav_logout) {
             LoginManager.getInstance().logOut();
-            goLoginActivity();
+            goIntroActivity();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void setFragment() {
+        Intent i = new Intent(this,InfomationActivity.class);
+        startActivity(i);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("a","aaaa");
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(MainActivity.this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 }

@@ -15,7 +15,7 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.mnetwork.app.nhatrosv.R;
-import com.mnetwork.app.nhatrosv.activitys.LoginActivity;
+import com.mnetwork.app.nhatrosv.activity.LoginActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
