@@ -19,6 +19,7 @@ public class InfomationActivity extends AppCompatActivity {
         actionBar.setTitle("Thông tin");
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+
     }
 
     @Override

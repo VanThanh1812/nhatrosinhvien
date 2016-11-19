@@ -517,6 +517,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setFragment() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setCheckedItem(R.id.nav_house);
         Intent i = new Intent(this,InfomationActivity.class);
         startActivity(i);
     }
