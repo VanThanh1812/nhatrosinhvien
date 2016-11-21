@@ -23,11 +23,6 @@
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <ImageView
-                android:id="@+id/iv_room_first"
-                android:layout_gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
@@ -35,11 +30,15 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
+            <ImageView
+                android:id="@+id/iv_room_first"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
-
-    <include layout="@layout/content_room_detail" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -49,5 +48,7 @@
         android:src="@drawable/ic_phone"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end" />
+
+    <include layout="@layout/content_room_detail" />
 
 </android.support.design.widget.CoordinatorLayout>

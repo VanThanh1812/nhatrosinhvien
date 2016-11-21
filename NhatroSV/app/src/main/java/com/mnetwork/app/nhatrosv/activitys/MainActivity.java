@@ -92,12 +92,8 @@ public class MainActivity extends AppCompatActivity
         fab_view_house.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(getCurrentFocus(),"Nothing",Snackbar.LENGTH_SHORT).setAction("Cancel", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        // nothing
-                    }
-                }).show();
+                Intent intent = new Intent(MainActivity.this, ShowListHouse.class);
+                startActivity(intent);
             }
         });
 
@@ -116,15 +112,15 @@ public class MainActivity extends AppCompatActivity
 
     private void loginFacebook (){
 
-        if (AccessToken.getCurrentAccessToken() == null){
-
+        if (AccessToken.getCurrentAccessToken() != null){
+            // ko dn dc thi van vao main
             goLoginActivity();
 
         }else {
             /*
             * TODO:get info
             * */
-            Log.d("accesstoken",AccessToken.getCurrentAccessToken().getToken());
+//            Log.d("accesstoken",AccessToken.getCurrentAccessToken().getToken());
             ParseJsonLogin login = new ParseJsonLogin(AccessToken.getCurrentAccessToken(),this);
             login.setInfoUser();
 

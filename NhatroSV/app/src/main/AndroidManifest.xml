@@ -50,6 +50,7 @@
         <activity
             android:name=".activitys.ViewImageActivity"
             android:parentActivityName=".activitys.RoomDetailActivity" />
+        <activity android:name=".activitys.ShowListHouse"></activity>
     </application>
 
 </manifest>
